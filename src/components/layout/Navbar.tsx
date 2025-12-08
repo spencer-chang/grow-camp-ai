@@ -3,12 +3,49 @@ import { Button } from "@/components/ui/button";
 import { Globe, Menu, X, User, LogOut } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-const navLinks = [
-  { href: "/", label: "首頁" },
-  { href: "/camps", label: "夏令營" },
-  { href: "/about", label: "關於我們" },
-];
+export function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const isLoggedIn = false;
+  
+  // Determine if we're on English pages
+  const isEnglish = location.pathname.startsWith("/en");
+  
+  const navLinks = isEnglish
+    ? [
+        { href: "/en/home", label: "Home" },
+        { href: "/en/camps", label: "Camps" },
+        { href: "/en/about", label: "About" },
+        { href: "/en/contact", label: "Contact" },
+      ]
+    : [
+        { href: "/", label: "首頁" },
+        { href: "/camps", label: "夏令營" },
+        { href: "/about", label: "關於我們" },
+        { href: "/contact", label: "聯絡我們" },
+      ];
+
+  const getLanguageSwitchPath = () => {
+    const path = location.pathname;
+    if (isEnglish) {
+      // Switch to Chinese
+      if (path === "/en/home") return "/";
+      if (path.startsWith("/en/camp/")) return path.replace("/en/camp/", "/camps/");
+      return path.replace("/en", "") || "/";
+    } else {
+      // Switch to English
+      if (path === "/") return "/en/home";
+      if (path.startsWith("/camps/")) return path.replace("/camps/", "/en/camp/");
+      return `/en${path}`;
+    }
+  };
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,26 +88,48 @@ export function Navbar() {
 
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center gap-3">
+            {/* Language Switcher */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="gap-2">
+                  <Globe className="w-4 h-4" />
+                  <span>{isEnglish ? "EN" : "中文"}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link to={isEnglish ? getLanguageSwitchPath() : location.pathname} className={!isEnglish ? "bg-primary/10 text-primary" : ""}>
+                    中文
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to={!isEnglish ? getLanguageSwitchPath() : location.pathname} className={isEnglish ? "bg-primary/10 text-primary" : ""}>
+                    English
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             {isLoggedIn ? (
               <>
                 <Link to="/dashboard">
                   <Button variant="ghost" size="sm">
                     <User className="w-4 h-4 mr-2" />
-                    我的儀表板
+                    {isEnglish ? "Dashboard" : "我的儀表板"}
                   </Button>
                 </Link>
                 <Button variant="outline" size="sm">
                   <LogOut className="w-4 h-4 mr-2" />
-                  登出
+                  {isEnglish ? "Logout" : "登出"}
                 </Button>
               </>
             ) : (
               <>
                 <Link to="/auth">
-                  <Button variant="ghost" size="sm">登入</Button>
+                  <Button variant="ghost" size="sm">{isEnglish ? "Login" : "登入"}</Button>
                 </Link>
                 <Link to="/auth?mode=register">
-                  <Button variant="default" size="sm">免費註冊</Button>
+                  <Button variant="default" size="sm">{isEnglish ? "Sign Up" : "免費註冊"}</Button>
                 </Link>
               </>
             )}
