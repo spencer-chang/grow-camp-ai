@@ -1,7 +1,7 @@
 import { Layout } from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Globe2, Users, TrendingUp, Brain, Search, BarChart3, FileText, CheckCircle } from "lucide-react";
+import { ArrowRight, Sparkles, Globe2, Users, TrendingUp, Brain, Search, BarChart3, FileText, CheckCircle, Award, Shield, Heart } from "lucide-react";
 import { CampCard } from "@/components/camps/CampCard";
 import { camps } from "@/data/camps";
 
@@ -9,34 +9,52 @@ const features = [
   {
     icon: Brain,
     title: "AI-Powered Matching",
-    description: "Our intelligent questionnaire analyzes your child's unique traits to recommend the top 3-5 most suitable camps with detailed reasoning.",
+    description: "Our proprietary algorithm analyzes your child's unique personality traits, learning style, and interests to recommend the most suitable programs from our curated network of European camps.",
     color: "bg-primary/10 text-primary",
   },
   {
     icon: Search,
-    title: "Camp Discovery",
-    description: "Comprehensive database of premium European summer camps with multi-dimensional filtering for easy comparison.",
+    title: "Curated Camp Network",
+    description: "We partner exclusively with vetted, premium European summer programs. Each camp in our network meets rigorous standards for safety, educational quality, and cultural enrichment.",
     color: "bg-accent/10 text-accent",
   },
   {
     icon: BarChart3,
-    title: "Growth Tracking",
-    description: "Pre and post-camp assessment system to measure your child's development across multiple competencies.",
+    title: "Measurable Growth Tracking",
+    description: "Our pre and post-camp assessment framework captures developmental progress across key competencies—confidence, social skills, independence, and cross-cultural awareness.",
     color: "bg-green-500/10 text-green-600",
   },
   {
     icon: FileText,
-    title: "AI Growth Reports",
-    description: "Personalized reports generated from assessment data, highlighting progress and providing actionable recommendations.",
+    title: "AI-Generated Growth Reports",
+    description: "Receive comprehensive growth reports that document your child's journey, highlight areas of improvement, and provide actionable recommendations for continued development.",
     color: "bg-amber-500/10 text-amber-600",
   },
 ];
 
 const benefits = [
-  "Free AI matching consultation",
+  "Complimentary AI matching consultation",
   "3-minute assessment questionnaire",
-  "Personalized camp recommendations",
-  "Expert advisor follow-up support",
+  "Personalized program recommendations",
+  "Dedicated advisor support throughout",
+];
+
+const trustFactors = [
+  {
+    icon: Shield,
+    title: "Verified Partners",
+    description: "Every camp undergoes our rigorous vetting process",
+  },
+  {
+    icon: Award,
+    title: "Quality Assured",
+    description: "We maintain the highest standards for educational excellence",
+  },
+  {
+    icon: Heart,
+    title: "Child-Centered",
+    description: "Every recommendation prioritizes your child's growth and wellbeing",
+  },
 ];
 
 export default function HomeEN() {
@@ -54,30 +72,30 @@ export default function HomeEN() {
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8 animate-fade-in">
               <Sparkles className="w-4 h-4" />
-              AI-Powered International Education Platform
+              Asia's Leading AI-Powered International Education Platform
             </div>
 
             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-6 animate-slide-up">
-              Transform Your Child's
+              Unlock Your Child's Potential Through
               <br />
-              <span className="text-gradient">International Experience</span>
+              <span className="text-gradient">Transformative International Experiences</span>
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-              Leverage AI-powered matching to find the perfect European summer camp for your child.
-              From pre-camp assessment to post-camp growth reports, we track every step of your child's international learning journey.
+              We leverage advanced AI technology to match your child with the perfect European summer program—and measure their growth every step of the way. 
+              From personalized recommendations to comprehensive progress reports, we make international education meaningful and measurable.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-slide-up" style={{ animationDelay: '0.2s' }}>
               <Link to="/auth">
                 <Button variant="hero" size="xl">
-                  Start AI Matching
+                  Start Your Child's Journey
                   <ArrowRight className="w-5 h-5" />
                 </Button>
               </Link>
               <Link to="/en/camps">
                 <Button variant="outline-primary" size="xl">
-                  Explore All Camps
+                  Explore Our Programs
                 </Button>
               </Link>
             </div>
@@ -88,14 +106,14 @@ export default function HomeEN() {
                   <Globe2 className="w-6 h-6 text-primary" />
                 </div>
                 <div className="text-2xl font-bold text-foreground">50+</div>
-                <div className="text-sm text-muted-foreground">Premium European Camps</div>
+                <div className="text-sm text-muted-foreground">Premium European Programs</div>
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center w-12 h-12 mx-auto mb-3 rounded-xl bg-accent/10">
                   <Users className="w-6 h-6 text-accent" />
                 </div>
                 <div className="text-2xl font-bold text-foreground">1,200+</div>
-                <div className="text-sm text-muted-foreground">Families Trust Us</div>
+                <div className="text-sm text-muted-foreground">Families Served</div>
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center w-12 h-12 mx-auto mb-3 rounded-xl bg-green-500/10">
@@ -109,15 +127,34 @@ export default function HomeEN() {
         </div>
       </section>
 
+      {/* Trust Section */}
+      <section className="py-16 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            {trustFactors.map((factor) => (
+              <div key={factor.title} className="flex items-start gap-4 p-4">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <factor.icon className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-1">{factor.title}</h3>
+                  <p className="text-sm text-muted-foreground">{factor.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section className="py-24 bg-card">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Four Core Features
+              A Complete Ecosystem for International Education
             </h2>
             <p className="text-lg text-muted-foreground">
-              From camp selection to growth tracking, we provide comprehensive AI-assisted services
+              We go beyond simple camp listings. Our integrated platform provides end-to-end support—from intelligent matching to measurable growth outcomes.
             </p>
           </div>
 
@@ -143,21 +180,53 @@ export default function HomeEN() {
         </div>
       </section>
 
-      {/* Camps Preview */}
+      {/* How It Works */}
       <section className="py-24">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Your Journey to Meaningful Growth
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Our streamlined process ensures the right match and measurable outcomes
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+            {[
+              { step: "01", title: "Complete Assessment", desc: "Answer our 3-minute questionnaire about your child's personality, interests, and goals" },
+              { step: "02", title: "Receive Recommendations", desc: "Our AI analyzes 20+ factors to match your child with ideal programs" },
+              { step: "03", title: "Experience & Grow", desc: "Your child attends a transformative international program in Europe" },
+              { step: "04", title: "Measure Progress", desc: "Receive a comprehensive growth report documenting their development" },
+            ].map((item, index) => (
+              <div key={item.step} className="text-center relative">
+                <div className="text-6xl font-bold text-primary/10 mb-4">{item.step}</div>
+                <h3 className="font-display font-semibold text-lg mb-2">{item.title}</h3>
+                <p className="text-sm text-muted-foreground">{item.desc}</p>
+                {index < 3 && (
+                  <ArrowRight className="hidden md:block absolute top-8 -right-4 w-8 h-8 text-primary/30" />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Camps Preview */}
+      <section className="py-24 bg-card">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
               <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Featured European Summer Camps
+                Featured European Programs
               </h2>
               <p className="text-lg text-muted-foreground max-w-xl">
-                Carefully selected premium camps across Europe, covering STEAM, languages, sports, outdoor adventures and more
+                Explore our curated selection of premium summer programs across Europe—each vetted for quality, safety, and educational excellence.
               </p>
             </div>
             <Link to="/en/camps" className="mt-6 md:mt-0">
               <Button variant="outline-primary">
-                View All Camps
+                View All Programs
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
@@ -184,11 +253,11 @@ export default function HomeEN() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="font-display text-3xl md:text-4xl font-bold text-primary-foreground mb-6">
-              Ready to Find the Perfect Camp for Your Child?
+              Ready to Transform Your Child's Future?
             </h2>
             <p className="text-lg text-primary-foreground/80 mb-8">
-              Complete our 3-minute questionnaire and let AI recommend the most suitable 
-              European summer camp based on your child's unique personality and interests.
+              Join thousands of families who have discovered the power of personalized international education. 
+              Our AI-driven approach ensures every child finds their perfect program—and every experience delivers measurable growth.
             </p>
 
             <div className="flex flex-wrap justify-center gap-4 mb-10">
@@ -208,7 +277,7 @@ export default function HomeEN() {
                 size="xl" 
                 className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 shadow-lg"
               >
-                Start AI Matching Now
+                Begin Your Child's Journey
                 <ArrowRight className="w-5 h-5" />
               </Button>
             </Link>

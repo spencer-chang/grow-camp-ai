@@ -12,6 +12,10 @@ import {
   ArrowLeft,
   Heart,
   Share2,
+  Sparkles,
+  Shield,
+  Award,
+  Globe,
 } from "lucide-react";
 
 const categoryColors: Record<string, string> = {
@@ -23,7 +27,7 @@ const categoryColors: Record<string, string> = {
 };
 
 const categoryLabels: Record<string, string> = {
-  STEAM: "Technology & Innovation",
+  STEAM: "STEAM & Technology",
   Sports: "Sports Excellence",
   English: "English Immersion",
   Outdoor: "Outdoor Adventure",
@@ -38,9 +42,12 @@ export default function CampDetailEN() {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-20 text-center">
-          <h1 className="text-2xl font-bold mb-4">Camp Not Found</h1>
+          <h1 className="text-2xl font-bold mb-4">Program Not Found</h1>
+          <p className="text-muted-foreground mb-6">
+            The program you're looking for doesn't exist or may have been removed.
+          </p>
           <Link to="/en/camps">
-            <Button>Back to Camp List</Button>
+            <Button>Browse All Programs</Button>
           </Link>
         </div>
       </Layout>
@@ -48,8 +55,35 @@ export default function CampDetailEN() {
   }
 
   const scheduleWeeks = [
-    { week: "Week 1", activities: ["Arrival & Orientation", "Foundation Courses", "Team Building Activities"] },
-    { week: "Week 2", activities: ["Advanced Skills Training", "Hands-on Projects", "Cultural Experiences"] },
+    { 
+      week: "Week 1: Foundation", 
+      activities: [
+        "Arrival, orientation, and welcome ceremony",
+        "Core skills assessment and group formation", 
+        "Introductory workshops and team-building activities",
+        "Cultural integration and local exploration"
+      ] 
+    },
+    { 
+      week: "Week 2: Immersion", 
+      activities: [
+        "Advanced skill development and specialization",
+        "Hands-on projects and collaborative challenges", 
+        "Cultural excursions and expert guest sessions",
+        "Showcase preparation and closing celebration"
+      ] 
+    },
+  ];
+
+  const inclusions = [
+    { item: "Tuition & Program Fees", included: true },
+    { item: "Accommodation (Shared)", included: true },
+    { item: "All Meals", included: true },
+    { item: "Travel Insurance", included: true },
+    { item: "Learning Materials", included: true },
+    { item: "Excursions & Activities", included: true },
+    { item: "International Flights", included: false },
+    { item: "Personal Expenses", included: false },
   ];
 
   return (
@@ -70,7 +104,7 @@ export default function CampDetailEN() {
             className="absolute top-6 left-6 flex items-center gap-2 px-4 py-2 rounded-full bg-card/90 backdrop-blur-sm text-foreground hover:bg-card transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to List
+            All Programs
           </Link>
 
           {/* Action Buttons */}
@@ -92,7 +126,16 @@ export default function CampDetailEN() {
               <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-card mb-2">
                 {camp.name}
               </h1>
-              <p className="text-lg text-card/80">{camp.nameZh}</p>
+              <div className="flex items-center gap-4 text-card/90">
+                <span className="flex items-center gap-1">
+                  <MapPin className="w-4 h-4" />
+                  {camp.city}, {camp.country}
+                </span>
+                <span className="flex items-center gap-1">
+                  <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                  {camp.rating} ({camp.reviews} reviews)
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -105,35 +148,56 @@ export default function CampDetailEN() {
               <div className="flex flex-wrap gap-6 p-6 bg-card rounded-2xl border border-border">
                 <div className="flex items-center gap-2">
                   <MapPin className="w-5 h-5 text-primary" />
-                  <span>
-                    {camp.city}, {camp.country}
-                  </span>
+                  <div>
+                    <div className="text-sm text-muted-foreground">Location</div>
+                    <div className="font-medium">{camp.city}, {camp.country}</div>
+                  </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <Calendar className="w-5 h-5 text-primary" />
-                  <span>{camp.duration}</span>
+                  <div>
+                    <div className="text-sm text-muted-foreground">Duration</div>
+                    <div className="font-medium">{camp.duration}</div>
+                  </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <Users className="w-5 h-5 text-primary" />
-                  <span>
-                    Ages {camp.ageMin}-{camp.ageMax}
-                  </span>
+                  <div>
+                    <div className="text-sm text-muted-foreground">Ages</div>
+                    <div className="font-medium">{camp.ageMin}-{camp.ageMax} years</div>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Star className="w-5 h-5 fill-amber-400 text-amber-400" />
-                  <span>
-                    {camp.rating} ({camp.reviews} reviews)
-                  </span>
+              </div>
+
+              {/* Trust Badges */}
+              <div className="flex flex-wrap gap-4">
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-sm">
+                  <Shield className="w-4 h-4" />
+                  Verified Partner
+                </div>
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm">
+                  <Award className="w-4 h-4" />
+                  Quality Assured
+                </div>
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-purple-50 text-purple-700 rounded-full text-sm">
+                  <Globe className="w-4 h-4" />
+                  International Community
                 </div>
               </div>
 
               {/* Description */}
               <section>
                 <h2 className="font-display text-2xl font-bold text-foreground mb-4">
-                  About This Camp
+                  About This Program
                 </h2>
-                <p className="text-muted-foreground leading-relaxed text-lg">
+                <p className="text-muted-foreground leading-relaxed text-lg mb-4">
                   {camp.description}
+                </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  This program is part of EduGrowth's curated network of premium European summer experiences. 
+                  Each program in our network is carefully vetted for educational quality, safety standards, 
+                  and cultural enrichment value. Our partner programs welcome participants from diverse 
+                  international backgrounds, creating a truly global learning environment.
                 </p>
               </section>
 
@@ -158,22 +222,26 @@ export default function CampDetailEN() {
               {/* Schedule */}
               <section>
                 <h2 className="font-display text-2xl font-bold text-foreground mb-4">
-                  Program Schedule
+                  Sample Program Schedule
                 </h2>
+                <p className="text-muted-foreground mb-6">
+                  Below is a representative schedule. Actual activities may vary based on weather, 
+                  group composition, and learning objectives.
+                </p>
                 <div className="space-y-4">
                   {scheduleWeeks.map((week) => (
                     <div
                       key={week.week}
                       className="p-6 bg-card rounded-xl border border-border"
                     >
-                      <h3 className="font-semibold text-lg mb-3">{week.week}</h3>
-                      <ul className="space-y-2">
+                      <h3 className="font-semibold text-lg mb-4">{week.week}</h3>
+                      <ul className="space-y-3">
                         {week.activities.map((activity, i) => (
                           <li
                             key={i}
-                            className="flex items-center gap-2 text-muted-foreground"
+                            className="flex items-start gap-3 text-muted-foreground"
                           >
-                            <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2" />
                             {activity}
                           </li>
                         ))}
@@ -183,32 +251,58 @@ export default function CampDetailEN() {
                 </div>
               </section>
 
-              {/* Suitable For */}
+              {/* Ideal Participant */}
               <section>
                 <h2 className="font-display text-2xl font-bold text-foreground mb-4">
-                  Ideal For
+                  Ideal Participant Profile
                 </h2>
                 <div className="p-6 bg-secondary/50 rounded-xl">
+                  <p className="text-muted-foreground mb-4">
+                    This program is designed for young learners who are curious, open-minded, and ready 
+                    to step outside their comfort zone. Ideal participants include:
+                  </p>
                   <ul className="space-y-3 text-muted-foreground">
                     <li className="flex items-start gap-2">
                       <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
                       <span>
-                        Children interested in {categoryLabels[camp.category].toLowerCase()}
+                        Students aged {camp.ageMin}-{camp.ageMax} with a genuine interest in {categoryLabels[camp.category].toLowerCase()}
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
-                      <span>Ages {camp.ageMin}-{camp.ageMax} years old</span>
+                      <span>Intermediate to advanced English communication skills for full participation</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
-                      <span>Basic English communication skills</span>
+                      <span>Willingness to engage with peers from different cultural backgrounds</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
-                      <span>Willingness to try new things and make international friends</span>
+                      <span>Readiness to try new activities and embrace challenges</span>
                     </li>
                   </ul>
+                </div>
+              </section>
+
+              {/* Learning Outcomes */}
+              <section>
+                <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                  Expected Learning Outcomes
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {[
+                    "Enhanced confidence in English communication",
+                    "Improved cross-cultural awareness and sensitivity",
+                    "Strengthened independence and self-management skills",
+                    "Expanded global perspective and worldview",
+                    "Development of specific skills in program focus area",
+                    "Lasting international friendships and networks",
+                  ].map((outcome) => (
+                    <div key={outcome} className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border">
+                      <Sparkles className="w-4 h-4 text-primary flex-shrink-0" />
+                      <span className="text-sm">{outcome}</span>
+                    </div>
+                  ))}
                 </div>
               </section>
             </div>
@@ -222,49 +316,64 @@ export default function CampDetailEN() {
                     <span className="text-3xl font-bold text-foreground">
                       €{camp.priceEUR.toLocaleString()}
                     </span>
-                    <span className="text-muted-foreground ml-2">/ person</span>
+                    <span className="text-muted-foreground ml-2">/ participant</span>
                   </div>
 
-                  <div className="space-y-3 mb-6 text-sm">
-                    <div className="flex justify-between py-2 border-b border-border">
-                      <span className="text-muted-foreground">Tuition</span>
-                      <span>Included</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b border-border">
-                      <span className="text-muted-foreground">Accommodation & Meals</span>
-                      <span>Included</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b border-border">
-                      <span className="text-muted-foreground">Insurance</span>
-                      <span>Included</span>
-                    </div>
-                    <div className="flex justify-between py-2">
-                      <span className="text-muted-foreground">Flights</span>
-                      <span className="text-muted-foreground">Not included</span>
-                    </div>
+                  <div className="space-y-2 mb-6 text-sm">
+                    {inclusions.map((item) => (
+                      <div key={item.item} className="flex justify-between py-2 border-b border-border last:border-0">
+                        <span className="text-muted-foreground">{item.item}</span>
+                        <span className={item.included ? "text-green-600 font-medium" : "text-muted-foreground"}>
+                          {item.included ? "Included" : "Not included"}
+                        </span>
+                      </div>
+                    ))}
                   </div>
 
                   <Link to="/auth">
                     <Button variant="hero" size="lg" className="w-full mb-3">
-                      Login to Enroll
+                      Express Interest
                     </Button>
                   </Link>
                   <Link to="/auth">
                     <Button variant="outline" size="lg" className="w-full">
-                      AI Matching
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      Check AI Match Score
                     </Button>
                   </Link>
+                  
+                  <p className="text-xs text-muted-foreground text-center mt-4">
+                    Log in to see personalized fit analysis and AI recommendations
+                  </p>
                 </div>
 
                 {/* Help Box */}
                 <div className="bg-secondary/50 rounded-2xl p-6">
-                  <h3 className="font-semibold mb-2">Need Help?</h3>
+                  <h3 className="font-semibold mb-2">Have Questions?</h3>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Our professional advisors can help you choose the most suitable camp for your child
+                    Our education advisors are here to help you understand if this program 
+                    is the right fit for your child's goals and development needs.
                   </p>
                   <Link to="/en/contact">
                     <Button variant="outline" className="w-full">
-                      Contact Advisor
+                      Contact an Advisor
+                    </Button>
+                  </Link>
+                </div>
+
+                {/* AI Matching CTA */}
+                <div className="bg-primary/5 rounded-2xl p-6 border border-primary/20">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Sparkles className="w-5 h-5 text-primary" />
+                    <h3 className="font-semibold text-primary">Not Sure If This Is Right?</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Take our 3-minute assessment and let AI recommend the most suitable 
+                    programs based on your child's unique profile.
+                  </p>
+                  <Link to="/auth">
+                    <Button variant="default" size="sm" className="w-full">
+                      Start AI Matching
                     </Button>
                   </Link>
                 </div>
