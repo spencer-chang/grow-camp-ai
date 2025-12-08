@@ -35,36 +35,30 @@ export function Navbar() {
   const getLanguageSwitchPath = () => {
     const path = location.pathname;
     if (isEnglish) {
-      // Switch to Chinese
       if (path === "/en/home") return "/";
       if (path.startsWith("/en/camp/")) return path.replace("/en/camp/", "/camps/");
       return path.replace("/en", "") || "/";
     } else {
-      // Switch to English
       if (path === "/") return "/en/home";
       if (path.startsWith("/camps/")) return path.replace("/camps/", "/en/camp/");
       return `/en${path}`;
     }
   };
 
-export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
-  // Placeholder for auth state - will be replaced with real auth
-  const isLoggedIn = false;
-
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-lg border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
+          <Link to={isEnglish ? "/en/home" : "/"} className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-xl hero-gradient flex items-center justify-center">
               <Globe className="w-5 h-5 text-primary-foreground" />
             </div>
             <div className="hidden sm:block">
               <span className="font-display font-bold text-lg text-foreground">EduGrowth</span>
-              <span className="text-xs text-muted-foreground block -mt-1">AI 國際教育平台</span>
+              <span className="text-xs text-muted-foreground block -mt-1">
+                {isEnglish ? "AI Education Platform" : "AI 國際教育平台"}
+              </span>
             </div>
           </Link>
 
@@ -98,12 +92,18 @@ export function Navbar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem asChild>
-                  <Link to={isEnglish ? getLanguageSwitchPath() : location.pathname} className={!isEnglish ? "bg-primary/10 text-primary" : ""}>
+                  <Link 
+                    to={isEnglish ? getLanguageSwitchPath() : location.pathname} 
+                    className={cn("w-full", !isEnglish && "bg-primary/10 text-primary")}
+                  >
                     中文
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to={!isEnglish ? getLanguageSwitchPath() : location.pathname} className={isEnglish ? "bg-primary/10 text-primary" : ""}>
+                  <Link 
+                    to={!isEnglish ? getLanguageSwitchPath() : location.pathname} 
+                    className={cn("w-full", isEnglish && "bg-primary/10 text-primary")}
+                  >
                     English
                   </Link>
                 </DropdownMenuItem>
@@ -163,27 +163,44 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
+              
+              {/* Mobile Language Switcher */}
+              <div className="border-t border-border my-2 pt-2">
+                <Link
+                  to={getLanguageSwitchPath()}
+                  onClick={() => setIsOpen(false)}
+                  className="px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-2"
+                >
+                  <Globe className="w-4 h-4" />
+                  {isEnglish ? "切換至中文" : "Switch to English"}
+                </Link>
+              </div>
+              
               <div className="border-t border-border my-2" />
               {isLoggedIn ? (
                 <>
                   <Link to="/dashboard" onClick={() => setIsOpen(false)}>
                     <Button variant="ghost" className="w-full justify-start">
                       <User className="w-4 h-4 mr-2" />
-                      我的儀表板
+                      {isEnglish ? "Dashboard" : "我的儀表板"}
                     </Button>
                   </Link>
                   <Button variant="outline" className="w-full justify-start">
                     <LogOut className="w-4 h-4 mr-2" />
-                    登出
+                    {isEnglish ? "Logout" : "登出"}
                   </Button>
                 </>
               ) : (
                 <>
                   <Link to="/auth" onClick={() => setIsOpen(false)}>
-                    <Button variant="ghost" className="w-full">登入</Button>
+                    <Button variant="ghost" className="w-full">
+                      {isEnglish ? "Login" : "登入"}
+                    </Button>
                   </Link>
                   <Link to="/auth?mode=register" onClick={() => setIsOpen(false)}>
-                    <Button variant="default" className="w-full">免費註冊</Button>
+                    <Button variant="default" className="w-full">
+                      {isEnglish ? "Sign Up" : "免費註冊"}
+                    </Button>
                   </Link>
                 </>
               )}
