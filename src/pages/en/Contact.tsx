@@ -2,9 +2,45 @@ import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin, Send, MessageSquare, Clock, Building } from "lucide-react";
+import { Mail, Phone, MapPin, Send, MessageSquare, Clock, Building, Users, Handshake, Newspaper } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+
+const partnerTypes = [
+  {
+    icon: Building,
+    title: "Summer Camp Partners",
+    description: "Join our curated network of premium European programs. We provide qualified, motivated families matched through our AI system.",
+    benefits: [
+      "Access to engaged Asian family network",
+      "AI-matched referrals for better fit",
+      "Outcome data to demonstrate impact",
+      "Marketing support in Asian markets",
+    ],
+  },
+  {
+    icon: Users,
+    title: "Educational Institutions",
+    description: "Collaborate on cross-cultural learning initiatives, student exchange programs, and educational partnerships.",
+    benefits: [
+      "Joint program development",
+      "Cultural exchange opportunities",
+      "Research collaboration",
+      "Brand alignment with innovation",
+    ],
+  },
+  {
+    icon: Newspaper,
+    title: "Media & Press",
+    description: "Get insights on EdTech innovation, AI in education, and the future of international learning experiences.",
+    benefits: [
+      "Expert commentary available",
+      "Case studies and success stories",
+      "Industry trend analysis",
+      "Interview opportunities",
+    ],
+  },
+];
 
 export default function ContactEN() {
   const [formData, setFormData] = useState({
@@ -12,14 +48,14 @@ export default function ContactEN() {
     email: "",
     phone: "",
     organization: "",
-    subject: "",
+    inquiryType: "",
     message: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Message sent successfully! We'll get back to you soon.");
-    setFormData({ name: "", email: "", phone: "", organization: "", subject: "", message: "" });
+    toast.success("Thank you for your inquiry. Our team will respond within 1-2 business days.");
+    setFormData({ name: "", email: "", phone: "", organization: "", inquiryType: "", message: "" });
   };
 
   return (
@@ -30,49 +66,50 @@ export default function ContactEN() {
           <div className="absolute inset-0 hero-gradient opacity-5" />
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-2xl mx-auto text-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
+                <Handshake className="w-4 h-4" />
+                Partnership & Collaboration
+              </div>
               <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-6">
-                Partner With Us
+                Let's Build the Future of International Education Together
               </h1>
               <p className="text-lg text-muted-foreground">
-                Connect with Asia's leading AI-powered international education platform. 
-                Whether you're a camp operator, educational partner, or parent seeking guidance, 
-                we're here to help.
+                Whether you're a premium European camp seeking Asian families, an educational institution 
+                exploring partnerships, or a journalist covering EdTech innovation—we'd love to connect.
               </p>
             </div>
           </div>
         </section>
 
-        {/* Partnership Benefits */}
-        <section className="py-12 bg-card">
+        {/* Partnership Types */}
+        <section className="py-16 bg-card">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              <div className="text-center p-6">
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                  <Building className="w-7 h-7 text-primary" />
+            <div className="text-center mb-12">
+              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
+                Partnership Opportunities
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                We're actively seeking partners who share our commitment to transformative international education
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {partnerTypes.map((type) => (
+                <div key={type.title} className="bg-background rounded-2xl border border-border p-6">
+                  <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+                    <type.icon className="w-7 h-7 text-primary" />
+                  </div>
+                  <h3 className="font-display font-semibold text-xl mb-3">{type.title}</h3>
+                  <p className="text-muted-foreground text-sm mb-4">{type.description}</p>
+                  <ul className="space-y-2">
+                    {type.benefits.map((benefit) => (
+                      <li key={benefit} className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                        {benefit}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <h3 className="font-display font-semibold text-lg mb-2">Camp Partners</h3>
-                <p className="text-muted-foreground text-sm">
-                  Join our curated network of premium European camps and connect with Asian families
-                </p>
-              </div>
-              <div className="text-center p-6">
-                <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center mx-auto mb-4">
-                  <MessageSquare className="w-7 h-7 text-accent" />
-                </div>
-                <h3 className="font-display font-semibold text-lg mb-2">Educational Partners</h3>
-                <p className="text-muted-foreground text-sm">
-                  Collaborate on educational programs and cross-cultural learning initiatives
-                </p>
-              </div>
-              <div className="text-center p-6">
-                <div className="w-14 h-14 rounded-2xl bg-green-500/10 flex items-center justify-center mx-auto mb-4">
-                  <Mail className="w-7 h-7 text-green-600" />
-                </div>
-                <h3 className="font-display font-semibold text-lg mb-2">Media & Press</h3>
-                <p className="text-muted-foreground text-sm">
-                  Get in touch for interviews, features, and EdTech industry insights
-                </p>
-              </div>
+              ))}
             </div>
           </div>
         </section>
@@ -81,62 +118,90 @@ export default function ContactEN() {
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 max-w-6xl mx-auto">
               {/* Contact Info */}
-              <div className="space-y-8">
-                <div className="p-6 bg-card rounded-2xl border border-border">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                    <Mail className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-display font-semibold text-lg mb-2">Email</h3>
-                  <div className="space-y-2">
-                    <div>
-                      <p className="text-muted-foreground text-sm">General Inquiries</p>
-                      <a href="mailto:hello@edugrowth.tw" className="text-primary hover:underline">
-                        hello@edugrowth.tw
-                      </a>
-                    </div>
-                    <div>
-                      <p className="text-muted-foreground text-sm">Partnership</p>
-                      <a href="mailto:partners@edugrowth.tw" className="text-primary hover:underline">
-                        partners@edugrowth.tw
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-6 bg-card rounded-2xl border border-border">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                    <Phone className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-display font-semibold text-lg mb-2">Phone</h3>
-                  <p className="text-muted-foreground mb-2">Mon-Fri 9:00-18:00 (GMT+8)</p>
-                  <a href="tel:+886223456789" className="text-primary hover:underline">
-                    +886 2 2345 6789
-                  </a>
-                </div>
-
-                <div className="p-6 bg-card rounded-2xl border border-border">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                    <MapPin className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-display font-semibold text-lg mb-2">Office</h3>
-                  <p className="text-muted-foreground">
-                    10F, No. 100, Dunhua South Road, Sec. 2
-                    <br />
-                    Da'an District, Taipei City
-                    <br />
-                    Taiwan 106
+              <div className="space-y-6">
+                <div>
+                  <h3 className="font-display font-semibold text-lg mb-4">Get in Touch</h3>
+                  <p className="text-muted-foreground text-sm mb-6">
+                    Our team is based in Taipei with partnerships across Europe. 
+                    We respond to all inquiries within 1-2 business days.
                   </p>
                 </div>
 
-                <div className="p-6 bg-card rounded-2xl border border-border">
-                  <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4">
-                    <Clock className="w-6 h-6 text-accent" />
+                <div className="p-5 bg-card rounded-xl border border-border">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Mail className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium mb-1">Email</h4>
+                      <div className="space-y-1 text-sm">
+                        <div>
+                          <span className="text-muted-foreground">General: </span>
+                          <a href="mailto:hello@edugrowth.tw" className="text-primary hover:underline">
+                            hello@edugrowth.tw
+                          </a>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">Partnerships: </span>
+                          <a href="mailto:partners@edugrowth.tw" className="text-primary hover:underline">
+                            partners@edugrowth.tw
+                          </a>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">Press: </span>
+                          <a href="mailto:press@edugrowth.tw" className="text-primary hover:underline">
+                            press@edugrowth.tw
+                          </a>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <h3 className="font-display font-semibold text-lg mb-2">Business Hours</h3>
-                  <div className="text-muted-foreground space-y-1">
-                    <p>Monday - Friday: 09:00 - 18:00</p>
-                    <p>Saturday: By Appointment</p>
-                    <p>Sunday: Closed</p>
+                </div>
+
+                <div className="p-5 bg-card rounded-xl border border-border">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Phone className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium mb-1">Phone</h4>
+                      <p className="text-sm text-muted-foreground mb-1">Mon-Fri 9:00-18:00 (GMT+8)</p>
+                      <a href="tel:+886223456789" className="text-primary hover:underline">
+                        +886 2 2345 6789
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-5 bg-card rounded-xl border border-border">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium mb-1">Office</h4>
+                      <p className="text-sm text-muted-foreground">
+                        10F, No. 100, Dunhua South Road, Sec. 2<br />
+                        Da'an District, Taipei City<br />
+                        Taiwan 106
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-5 bg-card rounded-xl border border-border">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                      <Clock className="w-5 h-5 text-accent" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium mb-1">Business Hours</h4>
+                      <div className="text-sm text-muted-foreground space-y-1">
+                        <p>Monday - Friday: 09:00 - 18:00</p>
+                        <p>Saturday: By Appointment</p>
+                        <p>Sunday: Closed</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -144,15 +209,18 @@ export default function ContactEN() {
               {/* Contact Form */}
               <div className="lg:col-span-2">
                 <div className="bg-card rounded-2xl border border-border p-8">
-                  <div className="flex items-center gap-3 mb-6">
+                  <div className="flex items-center gap-3 mb-2">
                     <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                       <MessageSquare className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <h2 className="font-display text-2xl font-bold">Send a Message</h2>
-                      <p className="text-sm text-muted-foreground">We typically respond within 1-2 business days</p>
+                      <h2 className="font-display text-2xl font-bold">Send Us a Message</h2>
                     </div>
                   </div>
+                  <p className="text-muted-foreground mb-6">
+                    Tell us about your organization and how we might work together. 
+                    We typically respond within 1-2 business days.
+                  </p>
 
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -187,23 +255,31 @@ export default function ContactEN() {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium mb-2">Organization (Optional)</label>
+                        <label className="block text-sm font-medium mb-2">Organization *</label>
                         <Input
+                          required
                           value={formData.organization}
                           onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                          placeholder="Company or camp name"
+                          placeholder="Company, camp, or institution name"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium mb-2">Subject *</label>
-                      <Input
+                      <label className="block text-sm font-medium mb-2">Inquiry Type *</label>
+                      <select
                         required
-                        value={formData.subject}
-                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                        placeholder="How can we help?"
-                      />
+                        value={formData.inquiryType}
+                        onChange={(e) => setFormData({ ...formData, inquiryType: e.target.value })}
+                        className="w-full px-3 py-2 rounded-lg border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+                      >
+                        <option value="">Select inquiry type</option>
+                        <option value="camp-partnership">Summer Camp Partnership</option>
+                        <option value="educational-institution">Educational Institution</option>
+                        <option value="media-press">Media & Press</option>
+                        <option value="investment">Investment Inquiry</option>
+                        <option value="other">Other</option>
+                      </select>
                     </div>
 
                     <div>
@@ -213,7 +289,7 @@ export default function ContactEN() {
                         rows={6}
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        placeholder="Please describe your inquiry or partnership interest in detail..."
+                        placeholder="Please describe your organization, your interest in partnering with EduGrowth, and any specific questions you have..."
                       />
                     </div>
 
@@ -224,6 +300,31 @@ export default function ContactEN() {
                   </form>
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* For Families Section */}
+        <section className="py-16 bg-card">
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+              Looking for Camp Recommendations for Your Child?
+            </h2>
+            <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
+              If you're a parent seeking the right international summer program for your child, 
+              visit our main site to explore programs or try our AI matching system.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <a href="/en/camps">
+                <Button variant="outline" size="lg">
+                  Browse Programs
+                </Button>
+              </a>
+              <a href="/auth">
+                <Button variant="hero" size="lg">
+                  Start AI Matching
+                </Button>
+              </a>
             </div>
           </div>
         </section>

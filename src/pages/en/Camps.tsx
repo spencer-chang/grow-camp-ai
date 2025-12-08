@@ -5,14 +5,23 @@ import { camps, categories, cities } from "@/data/camps";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
-import { Search, SlidersHorizontal, X } from "lucide-react";
+import { Search, SlidersHorizontal, X, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const categoryLabels: Record<string, string> = {
-  STEAM: "Technology & Innovation",
+  STEAM: "STEAM & Technology",
   Sports: "Sports Excellence",
   English: "English Immersion",
   Outdoor: "Outdoor Adventure",
   Arts: "Arts & Creativity",
+};
+
+const categoryDescriptions: Record<string, string> = {
+  STEAM: "Robotics, coding, engineering, and innovation programs",
+  Sports: "Professional coaching in football, tennis, sailing, and more",
+  English: "Language immersion with cultural experiences",
+  Outdoor: "Leadership, wilderness skills, and nature exploration",
+  Arts: "Visual arts, performing arts, and creative expression",
 };
 
 export default function CampsEN() {
@@ -89,12 +98,27 @@ export default function CampsEN() {
         {/* Header */}
         <div className="bg-card border-b border-border">
           <div className="container mx-auto px-4 py-12">
-            <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Explore European Summer Camps
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl">
-              Browse our curated selection of premium European camps. Use filters to find the perfect experience for your child.
-            </p>
+            <div className="max-w-3xl">
+              <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Premium European Summer Programs
+              </h1>
+              <p className="text-lg text-muted-foreground mb-6">
+                Explore our curated network of world-class summer programs across Europe. 
+                Each program in our network has been carefully vetted for educational quality, 
+                safety standards, and cultural enrichment value.
+              </p>
+              <div className="flex items-center gap-4">
+                <Link to="/auth">
+                  <Button variant="hero" size="lg">
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Get AI Recommendations
+                  </Button>
+                </Link>
+                <span className="text-sm text-muted-foreground">
+                  Not sure where to start? Let our AI find the perfect match.
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -105,7 +129,7 @@ export default function CampsEN() {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <input
                 type="text"
-                placeholder="Search camps by name or city..."
+                placeholder="Search by program name, city, or country..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 rounded-xl border border-input bg-card focus:outline-none focus:ring-2 focus:ring-ring"
@@ -117,7 +141,7 @@ export default function CampsEN() {
               className="md:w-auto"
             >
               <SlidersHorizontal className="w-4 h-4 mr-2" />
-              Filters
+              Filter Programs
               {hasActiveFilters && (
                 <Badge variant="secondary" className="ml-2">
                   Active
@@ -143,7 +167,7 @@ export default function CampsEN() {
                 {/* Categories */}
                 <div>
                   <label className="text-sm font-medium text-foreground mb-3 block">
-                    Camp Type
+                    Program Type
                   </label>
                   <div className="flex flex-wrap gap-2">
                     {categories.map((category) => (
@@ -166,7 +190,7 @@ export default function CampsEN() {
                 {/* Cities */}
                 <div>
                   <label className="text-sm font-medium text-foreground mb-3 block">
-                    City
+                    Location
                   </label>
                   <div className="flex flex-wrap gap-2">
                     {cities.map((city) => (
@@ -202,7 +226,7 @@ export default function CampsEN() {
                 {/* Price Range */}
                 <div>
                   <label className="text-sm font-medium text-foreground mb-3 block">
-                    Price Range: €{priceRange[0]} - €{priceRange[1]}
+                    Budget: €{priceRange[0].toLocaleString()} - €{priceRange[1].toLocaleString()}
                   </label>
                   <Slider
                     value={priceRange}
@@ -217,10 +241,27 @@ export default function CampsEN() {
             </div>
           )}
 
+          {/* Category Quick Links */}
+          {!hasActiveFilters && (
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => toggleCategory(category)}
+                  className="p-4 bg-card rounded-xl border border-border hover:border-primary hover:bg-primary/5 transition-colors text-left"
+                >
+                  <div className="font-medium text-foreground mb-1">{categoryLabels[category]}</div>
+                  <div className="text-xs text-muted-foreground">{categoryDescriptions[category]}</div>
+                </button>
+              ))}
+            </div>
+          )}
+
           {/* Results Count */}
           <div className="mb-6">
             <p className="text-muted-foreground">
-              Found <span className="font-semibold text-foreground">{filteredCamps.length}</span> camps
+              Showing <span className="font-semibold text-foreground">{filteredCamps.length}</span> programs
+              {hasActiveFilters && " matching your criteria"}
             </p>
           </div>
 
@@ -240,13 +281,30 @@ export default function CampsEN() {
           ) : (
             <div className="text-center py-16">
               <p className="text-lg text-muted-foreground mb-4">
-                No camps found matching your criteria
+                No programs found matching your criteria
               </p>
               <Button variant="outline" onClick={clearFilters}>
                 Clear Filters
               </Button>
             </div>
           )}
+
+          {/* Bottom CTA */}
+          <div className="mt-16 p-8 bg-card rounded-2xl border border-border text-center">
+            <h3 className="font-display text-xl font-bold text-foreground mb-3">
+              Can't Decide? Let AI Help You Choose
+            </h3>
+            <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
+              Our AI-powered matching system analyzes your child's personality, interests, and goals 
+              to recommend the most suitable programs from our network.
+            </p>
+            <Link to="/auth">
+              <Button variant="hero" size="lg">
+                <Sparkles className="w-4 h-4 mr-2" />
+                Start AI Matching
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     </Layout>
