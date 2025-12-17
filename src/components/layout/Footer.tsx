@@ -1,49 +1,59 @@
 import { Link } from "react-router-dom";
 import { Globe, Mail, Phone, MapPin } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function Footer() {
+  const { isEnglish, t, getLocalizedPath } = useLanguage();
+
   return (
     <footer className="bg-foreground text-background">
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="space-y-4">
-            <Link to="/" className="flex items-center gap-2">
+            <Link to={getLocalizedPath("/")} className="flex items-center gap-2">
               <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
                 <Globe className="w-5 h-5 text-primary-foreground" />
               </div>
               <div>
                 <span className="font-display font-bold text-lg">EduGrowth</span>
-                <span className="text-xs text-muted block -mt-1">AI 國際教育平台</span>
+                <span className="text-xs text-muted block -mt-1">
+                  {t("AI 國際教育平台", "AI Education Platform")}
+                </span>
               </div>
             </Link>
             <p className="text-sm text-muted leading-relaxed">
-              用 AI 幫孩子找到最適合的國際夏令營體驗，讓孩子的成長可以被看見。
+              {t(
+                "用 AI 幫孩子找到最適合的國際夏令營體驗，讓孩子的成長可以被看見。",
+                "Using AI to help children find the perfect international summer camp experience, making their growth visible and measurable."
+              )}
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-display font-semibold mb-4">快速連結</h4>
+            <h4 className="font-display font-semibold mb-4">
+              {t("快速連結", "Quick Links")}
+            </h4>
             <ul className="space-y-3 text-sm">
               <li>
-                <Link to="/camps" className="text-muted hover:text-background transition-colors">
-                  探索夏令營
+                <Link to={getLocalizedPath("/camps")} className="text-muted hover:text-background transition-colors">
+                  {t("探索夏令營", "Explore Camps")}
                 </Link>
               </li>
               <li>
-                <Link to="/survey/pre" className="text-muted hover:text-background transition-colors">
-                  AI 適性配對
+                <Link to={isEnglish ? "/en/contact" : "/survey/pre"} className="text-muted hover:text-background transition-colors">
+                  {t("AI 適性配對", "Partner With Us")}
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="text-muted hover:text-background transition-colors">
-                  關於我們
+                <Link to={getLocalizedPath("/about")} className="text-muted hover:text-background transition-colors">
+                  {t("關於我們", "About Us")}
                 </Link>
               </li>
               <li>
-                <Link to="/auth" className="text-muted hover:text-background transition-colors">
-                  家長登入
+                <Link to={isEnglish ? "/en/contact" : "/auth"} className="text-muted hover:text-background transition-colors">
+                  {t("家長登入", "Contact Us")}
                 </Link>
               </li>
             </ul>
@@ -51,31 +61,33 @@ export function Footer() {
 
           {/* Camp Categories */}
           <div>
-            <h4 className="font-display font-semibold mb-4">營隊類別</h4>
+            <h4 className="font-display font-semibold mb-4">
+              {t("營隊類別", "Program Categories")}
+            </h4>
             <ul className="space-y-3 text-sm">
               <li>
-                <Link to="/camps?category=STEAM" className="text-muted hover:text-background transition-colors">
-                  STEAM 科技營
+                <Link to={getLocalizedPath("/camps") + "?category=STEAM"} className="text-muted hover:text-background transition-colors">
+                  {t("STEAM 科技營", "STEAM Technology")}
                 </Link>
               </li>
               <li>
-                <Link to="/camps?category=English" className="text-muted hover:text-background transition-colors">
-                  英語沉浸營
+                <Link to={getLocalizedPath("/camps") + "?category=English"} className="text-muted hover:text-background transition-colors">
+                  {t("英語沉浸營", "English Immersion")}
                 </Link>
               </li>
               <li>
-                <Link to="/camps?category=Sports" className="text-muted hover:text-background transition-colors">
-                  運動專項營
+                <Link to={getLocalizedPath("/camps") + "?category=Sports"} className="text-muted hover:text-background transition-colors">
+                  {t("運動專項營", "Sports Excellence")}
                 </Link>
               </li>
               <li>
-                <Link to="/camps?category=Outdoor" className="text-muted hover:text-background transition-colors">
-                  戶外探險營
+                <Link to={getLocalizedPath("/camps") + "?category=Outdoor"} className="text-muted hover:text-background transition-colors">
+                  {t("戶外探險營", "Outdoor Adventure")}
                 </Link>
               </li>
               <li>
-                <Link to="/camps?category=Arts" className="text-muted hover:text-background transition-colors">
-                  藝術創意營
+                <Link to={getLocalizedPath("/camps") + "?category=Arts"} className="text-muted hover:text-background transition-colors">
+                  {t("藝術創意營", "Arts & Creativity")}
                 </Link>
               </li>
             </ul>
@@ -83,7 +95,9 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-display font-semibold mb-4">聯絡我們</h4>
+            <h4 className="font-display font-semibold mb-4">
+              {t("聯絡我們", "Contact Us")}
+            </h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-center gap-2 text-muted">
                 <Mail className="w-4 h-4" />
@@ -95,7 +109,10 @@ export function Footer() {
               </li>
               <li className="flex items-start gap-2 text-muted">
                 <MapPin className="w-4 h-4 mt-0.5" />
-                台北市大安區敦化南路二段100號
+                {t(
+                  "台北市大安區敦化南路二段100號",
+                  "No. 100, Sec. 2, Dunhua S. Rd., Da'an Dist., Taipei, Taiwan"
+                )}
               </li>
             </ul>
           </div>
@@ -103,14 +120,17 @@ export function Footer() {
 
         <div className="border-t border-muted/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted">
-            © 2024 EduGrowth AI 國際教育成長平台. All rights reserved.
+            {t(
+              "© 2024 EduGrowth AI 國際教育成長平台. All rights reserved.",
+              "© 2024 EduGrowth AI Education Platform. All rights reserved."
+            )}
           </p>
           <div className="flex gap-6 text-sm">
             <Link to="/privacy" className="text-muted hover:text-background transition-colors">
-              隱私權政策
+              {t("隱私權政策", "Privacy Policy")}
             </Link>
             <Link to="/terms" className="text-muted hover:text-background transition-colors">
-              服務條款
+              {t("服務條款", "Terms of Service")}
             </Link>
           </div>
         </div>
