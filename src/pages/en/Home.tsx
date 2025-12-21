@@ -87,7 +87,7 @@ export default function HomeEN() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              <Link to="/auth">
+              <Link to="/en/survey/pre">
                 <Button variant="hero" size="xl">
                   Start Your Child's Journey
                   <ArrowRight className="w-5 h-5" />
@@ -272,7 +272,7 @@ export default function HomeEN() {
               ))}
             </div>
 
-            <Link to="/auth">
+            <Link to="/en/survey/pre">
               <Button 
                 size="xl" 
                 className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 shadow-lg"
