@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useMemo, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,49 +12,15 @@ import {
   Users,
   ArrowRight,
   RefreshCw,
+  TrendingUp,
 } from "lucide-react";
-
-// Mock AI analysis result - in real app this would come from AI action
-const mockAnalysis = {
-  childProfile: {
-    englishLevel: "中等偏上",
-    socialStyle: "外向活潑",
-    adaptability: "適應力強",
-    interests: ["戶外探險", "運動"],
-    goals: "培養獨立自主與國際視野",
-  },
-  summary:
-    "根據問卷分析，您的孩子具有良好的社交能力和適應力，對戶外活動和運動有濃厚興趣。建議選擇結合自然探索與團隊合作的營隊，能幫助孩子在舒適圈外成長，同時發揮社交優勢。",
-  recommendations: [
-    {
-      camp: camps[0], // Swiss Alps
-      matchScore: 95,
-      reasons: [
-        "戶外探險活動完美契合興趣",
-        "團隊合作機會多，適合外向性格",
-        "適度挑戰性，有助培養獨立性",
-      ],
-    },
-    {
-      camp: camps[5], // Nordic
-      matchScore: 90,
-      reasons: [
-        "領導力培訓符合成長目標",
-        "自然環境豐富的探索活動",
-        "國際化團隊增進視野",
-      ],
-    },
-    {
-      camp: camps[3], // Barcelona Football
-      matchScore: 85,
-      reasons: [
-        "專業運動訓練契合興趣",
-        "團隊運動培養社交能力",
-        "西班牙文化體驗拓展視野",
-      ],
-    },
-  ],
-};
+import {
+  calculateProfile,
+  generateSummary,
+  profileDescriptions,
+  ChildProfile,
+} from "@/lib/surveyModel";
+import { getRecommendations, CampRecommendation } from "@/lib/campMatching";
 
 const categoryColors: Record<string, string> = {
   STEAM: "bg-purple-100 text-purple-700",
@@ -72,6 +39,62 @@ const categoryLabels: Record<string, string> = {
 };
 
 export default function SurveyResults() {
+  const navigate = useNavigate();
+  const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
+
+  // 從 sessionStorage 讀取答案
+  useEffect(() => {
+    const savedAnswers = sessionStorage.getItem('surveyAnswers');
+    if (savedAnswers) {
+      setAnswers(JSON.parse(savedAnswers));
+    } else {
+      // 如果沒有答案，重新導向問卷頁
+      navigate('/survey/pre');
+    }
+  }, [navigate]);
+
+  // 計算孩子特質分析
+  const profile: ChildProfile | null = useMemo(() => {
+    if (Object.keys(answers).length === 0) return null;
+    return calculateProfile(answers);
+  }, [answers]);
+
+  // 生成分析摘要
+  const summary = useMemo(() => {
+    if (!profile) return '';
+    return generateSummary(profile, answers);
+  }, [profile, answers]);
+
+  // 獲取營隊推薦
+  const recommendations: CampRecommendation[] = useMemo(() => {
+    if (!profile) return [];
+    return getRecommendations(camps, profile, answers, 3);
+  }, [profile, answers]);
+
+  // 重新測驗
+  const handleRetake = () => {
+    sessionStorage.removeItem('surveyAnswers');
+    navigate('/survey/pre');
+  };
+
+  if (!profile) {
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <Sparkles className="w-12 h-12 text-primary mx-auto mb-4 animate-pulse" />
+            <p className="text-muted-foreground">正在載入分析結果...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  const typeInfo = profileDescriptions[profile.primaryType];
+  const secondaryInfo = profile.secondaryType 
+    ? profileDescriptions[profile.secondaryType] 
+    : null;
+
   return (
     <Layout>
       <div className="min-h-screen bg-background">
@@ -93,51 +116,120 @@ export default function SurveyResults() {
 
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto">
-            {/* Child Profile Summary */}
+            {/* 孩子型態卡片 */}
             <section className="mb-12">
-              <h2 className="font-display text-2xl font-bold text-foreground mb-6">
-                孩子特質分析
-              </h2>
-              <div className="bg-card rounded-2xl p-6 border border-border">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                  <div className="text-center p-4 bg-secondary/50 rounded-xl">
-                    <div className="text-sm text-muted-foreground mb-1">
-                      英文程度
-                    </div>
-                    <div className="font-semibold">
-                      {mockAnalysis.childProfile.englishLevel}
-                    </div>
-                  </div>
-                  <div className="text-center p-4 bg-secondary/50 rounded-xl">
-                    <div className="text-sm text-muted-foreground mb-1">
-                      社交風格
-                    </div>
-                    <div className="font-semibold">
-                      {mockAnalysis.childProfile.socialStyle}
-                    </div>
-                  </div>
-                  <div className="text-center p-4 bg-secondary/50 rounded-xl">
-                    <div className="text-sm text-muted-foreground mb-1">
-                      適應能力
-                    </div>
-                    <div className="font-semibold">
-                      {mockAnalysis.childProfile.adaptability}
+              <div className="bg-card rounded-2xl p-8 border border-border relative overflow-hidden">
+                {/* 背景裝飾 */}
+                <div className="absolute top-0 right-0 w-40 h-40 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+                
+                <div className="relative">
+                  {/* 型態標題 */}
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="text-5xl">{typeInfo.emoji}</div>
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <h2 className="font-display text-2xl font-bold text-foreground">
+                          {typeInfo.nameZh}
+                        </h2>
+                        <Badge variant="secondary" className="text-xs">
+                          {typeInfo.name}
+                        </Badge>
+                      </div>
+                      {secondaryInfo && (
+                        <p className="text-sm text-muted-foreground">
+                          次要傾向：{secondaryInfo.nameZh}（{secondaryInfo.name}）
+                        </p>
+                      )}
                     </div>
                   </div>
-                  <div className="text-center p-4 bg-secondary/50 rounded-xl">
-                    <div className="text-sm text-muted-foreground mb-1">
-                      主要目標
+
+                  {/* 型態描述 */}
+                  <div className="p-4 bg-primary/5 rounded-xl mb-6">
+                    <p className="text-foreground leading-relaxed">
+                      {typeInfo.description}
+                    </p>
+                  </div>
+
+                  {/* 特質分析 */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div className="text-center p-4 bg-secondary/50 rounded-xl">
+                      <div className="text-sm text-muted-foreground mb-1">
+                        英文啟動度
+                      </div>
+                      <div className="font-semibold text-sm">
+                        {profile.traits.languageActivation}
+                      </div>
                     </div>
-                    <div className="font-semibold text-sm">
-                      {mockAnalysis.childProfile.goals}
+                    <div className="text-center p-4 bg-secondary/50 rounded-xl">
+                      <div className="text-sm text-muted-foreground mb-1">
+                        適應能力
+                      </div>
+                      <div className="font-semibold text-sm">
+                        {profile.traits.adaptability}
+                      </div>
+                    </div>
+                    <div className="text-center p-4 bg-secondary/50 rounded-xl">
+                      <div className="text-sm text-muted-foreground mb-1">
+                        社交風格
+                      </div>
+                      <div className="font-semibold text-sm">
+                        {profile.traits.socialOrientation}
+                      </div>
+                    </div>
+                    <div className="text-center p-4 bg-secondary/50 rounded-xl">
+                      <div className="text-sm text-muted-foreground mb-1">
+                        成長目標
+                      </div>
+                      <div className="font-semibold text-sm">
+                        {profile.traits.growthGoals.join('、')}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 主要特質 */}
+                  <div className="mb-6">
+                    <h3 className="text-sm font-medium text-foreground mb-3 flex items-center gap-2">
+                      <TrendingUp className="w-4 h-4 text-primary" />
+                      為什麼孩子屬於此型態
+                    </h3>
+                    <ul className="grid md:grid-cols-2 gap-2">
+                      {typeInfo.characteristics.map((char, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                          {char}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* 適合環境 */}
+                  <div>
+                    <h3 className="text-sm font-medium text-foreground mb-3">
+                      適合的學習與營隊環境
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {typeInfo.suitableEnvironments.map((env, i) => (
+                        <Badge key={i} variant="outline" className="text-xs">
+                          {env}
+                        </Badge>
+                      ))}
                     </div>
                   </div>
                 </div>
-                <div className="p-4 bg-primary/5 rounded-xl">
-                  <p className="text-muted-foreground leading-relaxed">
-                    <Sparkles className="w-4 h-4 inline mr-2 text-primary" />
-                    {mockAnalysis.summary}
-                  </p>
+              </div>
+            </section>
+
+            {/* AI 分析摘要 */}
+            <section className="mb-12">
+              <div className="p-6 bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl border border-primary/20">
+                <div className="flex items-start gap-3">
+                  <Sparkles className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                  <div>
+                    <h3 className="font-medium text-foreground mb-2">AI 個人化分析</h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {summary}
+                    </p>
+                  </div>
                 </div>
               </div>
             </section>
@@ -148,14 +240,14 @@ export default function SurveyResults() {
                 <h2 className="font-display text-2xl font-bold text-foreground">
                   推薦營隊 TOP 3
                 </h2>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={handleRetake}>
                   <RefreshCw className="w-4 h-4 mr-2" />
                   重新分析
                 </Button>
               </div>
 
               <div className="space-y-6">
-                {mockAnalysis.recommendations.map((rec, index) => (
+                {recommendations.map((rec, index) => (
                   <div
                     key={rec.camp.id}
                     className="bg-card rounded-2xl border border-border overflow-hidden card-elevated animate-slide-up"
