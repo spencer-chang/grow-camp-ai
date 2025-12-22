@@ -2,19 +2,17 @@
 // 測驗評估模型 - Survey Assessment Model
 // ================================
 
-// 六個核心評估維度
-export type Dimension = 
-  | 'languageActivation'    // 英文使用啟動度
-  | 'adaptability'          // 新環境適應力
-  | 'socialOrientation'     // 社交啟動風格
-  | 'learningModality'      // 學習與活動偏好
-  | 'growthIntention'       // 成長動機目標
-  | 'exposureLevel';        // 過往國際/營隊經驗
-
 // 三種主要孩子型態
 export type ProfileType = 'explorer' | 'builder' | 'connector';
 
-// 維度分數
+// 型態分數
+export interface ProfileScores {
+  explorer: number;
+  builder: number;
+  connector: number;
+}
+
+// 維度分數（保留用於顯示）
 export interface DimensionScores {
   languageActivation: number;
   adaptability: number;
@@ -24,19 +22,12 @@ export interface DimensionScores {
   exposureLevel: number;
 }
 
-// 型態權重配置
-export interface ProfileWeights {
-  explorer: number;
-  builder: number;
-  connector: number;
-}
-
 // 選項定義
 export interface SurveyOption {
   value: string;
   label: string;
   weights: Partial<DimensionScores>;
-  profileBonus?: Partial<ProfileWeights>;
+  profileBonus: Partial<ProfileScores>;
 }
 
 // 問題定義
@@ -51,7 +42,7 @@ export interface SurveyQuestion {
 export interface ChildProfile {
   primaryType: ProfileType;
   secondaryType?: ProfileType;
-  typeScores: ProfileWeights;
+  typeScores: ProfileScores;
   dimensionScores: DimensionScores;
   traits: {
     languageActivation: string;
@@ -135,205 +126,216 @@ export const profileDescriptions: Record<ProfileType, {
   }
 };
 
-// 問卷題目定義
+// ================================
+// 問卷題目定義（依照指定加權表）
+// ================================
 export const surveyQuestions: SurveyQuestion[] = [
   {
-    id: 'english_willingness',
-    question: '當遇到外國人時，孩子會如何反應？',
+    id: 'english_confidence',
+    question: '孩子對使用英文溝通的自信程度？',
     type: 'single',
     options: [
       {
-        value: 'eager',
-        label: '主動用英文打招呼，不怕說錯',
-        weights: { languageActivation: 5, socialOrientation: 4 },
-        profileBonus: { explorer: 3, connector: 2 }
-      },
-      {
-        value: 'cautious',
-        label: '觀察一陣子後會嘗試用英文溝通',
-        weights: { languageActivation: 3, socialOrientation: 2 },
+        value: '1',
+        label: '1 - 非常不自信',
+        weights: { languageActivation: 1 },
         profileBonus: { builder: 2 }
       },
       {
-        value: 'shy',
-        label: '會害羞，需要大人協助才開口',
-        weights: { languageActivation: 1, socialOrientation: 1 },
-        profileBonus: { builder: 3 }
+        value: '2',
+        label: '2 - 有些不自信',
+        weights: { languageActivation: 2 },
+        profileBonus: { builder: 1, connector: 1 }
       },
       {
-        value: 'avoid',
-        label: '不太願意使用英文，寧願用中文或比手畫腳',
-        weights: { languageActivation: 0, socialOrientation: 1 },
-        profileBonus: { builder: 2 }
+        value: '3',
+        label: '3 - 普通',
+        weights: { languageActivation: 3 },
+        profileBonus: { explorer: 1, builder: 1, connector: 1 }
+      },
+      {
+        value: '4',
+        label: '4 - 相當自信',
+        weights: { languageActivation: 4 },
+        profileBonus: { explorer: 2, connector: 2 }
+      },
+      {
+        value: '5',
+        label: '5 - 非常自信',
+        weights: { languageActivation: 5 },
+        profileBonus: { explorer: 3, connector: 3 }
       }
     ]
   },
   {
-    id: 'new_environment',
-    question: '孩子到一個完全陌生的地方（如新學校、新夏令營）時，通常會：',
+    id: 'adaptability',
+    question: '孩子適應新環境的能力如何？',
     type: 'single',
     options: [
       {
-        value: 'quick',
-        label: '很快就認識新朋友，融入新環境',
-        weights: { adaptability: 5, socialOrientation: 4 },
-        profileBonus: { explorer: 3, connector: 2 }
-      },
-      {
-        value: 'moderate',
-        label: '需要一兩天適應，之後就沒問題',
-        weights: { adaptability: 3, socialOrientation: 2 },
-        profileBonus: { builder: 1, explorer: 1 }
-      },
-      {
-        value: 'slow',
-        label: '需要較長時間適應，前期可能會想家',
-        weights: { adaptability: 1, socialOrientation: 1 },
+        value: '1',
+        label: '1 - 需要較長時間適應',
+        weights: { adaptability: 1 },
         profileBonus: { builder: 3 }
       },
       {
-        value: 'difficult',
-        label: '會非常焦慮，需要大人持續陪伴',
-        weights: { adaptability: 0, socialOrientation: 0 },
-        profileBonus: { builder: 2 }
-      }
-    ]
-  },
-  {
-    id: 'social_preference',
-    question: '在團體活動中，孩子通常是什麼角色？',
-    type: 'single',
-    options: [
-      {
-        value: 'leader',
-        label: '自然成為帶領者，主動組織活動',
-        weights: { socialOrientation: 5, adaptability: 3 },
-        profileBonus: { connector: 3, explorer: 2 }
-      },
-      {
-        value: 'active',
-        label: '積極參與，但不一定要當領導',
-        weights: { socialOrientation: 4, adaptability: 3 },
-        profileBonus: { connector: 2, explorer: 2 }
-      },
-      {
-        value: 'observer',
-        label: '先觀察再行動，喜歡小團體互動',
-        weights: { socialOrientation: 2, adaptability: 2 },
-        profileBonus: { builder: 3 }
-      },
-      {
-        value: 'independent',
-        label: '偏好獨立活動，大團體會感到不自在',
-        weights: { socialOrientation: 1, adaptability: 1 },
-        profileBonus: { builder: 2 }
-      }
-    ]
-  },
-  {
-    id: 'activity_preference',
-    question: '以下哪些活動類型最能吸引孩子？（可複選）',
-    type: 'multiple',
-    options: [
-      {
-        value: 'outdoor',
-        label: '🏕️ 戶外探險（登山、露營、野外求生）',
-        weights: { learningModality: 3, adaptability: 2 },
-        profileBonus: { explorer: 3 }
-      },
-      {
-        value: 'sports',
-        label: '⚽ 運動競技（足球、籃球、游泳等）',
-        weights: { learningModality: 3, socialOrientation: 2 },
-        profileBonus: { explorer: 2, connector: 1 }
-      },
-      {
-        value: 'steam',
-        label: '🔬 STEAM 科技（程式、機器人、科學實驗）',
-        weights: { learningModality: 3, growthIntention: 2 },
-        profileBonus: { builder: 3 }
-      },
-      {
-        value: 'creative',
-        label: '🎨 藝術創意（繪畫、音樂、戲劇）',
-        weights: { learningModality: 3, growthIntention: 2 },
+        value: '2',
+        label: '2 - 適應較慢',
+        weights: { adaptability: 2 },
         profileBonus: { builder: 2, connector: 1 }
       },
       {
-        value: 'language',
-        label: '📚 語言文化（英語學習、文化交流）',
-        weights: { learningModality: 2, languageActivation: 2 },
-        profileBonus: { connector: 2, builder: 1 }
+        value: '3',
+        label: '3 - 一般',
+        weights: { adaptability: 3 },
+        profileBonus: { explorer: 1, builder: 1, connector: 1 }
+      },
+      {
+        value: '4',
+        label: '4 - 適應較快',
+        weights: { adaptability: 4 },
+        profileBonus: { explorer: 2, connector: 2 }
+      },
+      {
+        value: '5',
+        label: '5 - 非常快適應',
+        weights: { adaptability: 5 },
+        profileBonus: { explorer: 3, connector: 3 }
       }
     ]
   },
   {
-    id: 'growth_goal',
-    question: '您最希望孩子透過國際營隊獲得什麼成長？',
+    id: 'social_style',
+    question: '孩子的社交風格是？',
     type: 'single',
     options: [
       {
-        value: 'independence',
-        label: '培養獨立自主能力，學會自己解決問題',
-        weights: { growthIntention: 4, adaptability: 2 },
-        profileBonus: { explorer: 3 }
-      },
-      {
-        value: 'skills',
-        label: '學習新技能，在特定領域有所精進',
-        weights: { growthIntention: 4, learningModality: 2 },
+        value: 'introvert',
+        label: '內向 - 喜歡獨處或小團體',
+        weights: { socialOrientation: 1 },
         profileBonus: { builder: 3 }
       },
       {
-        value: 'confidence',
-        label: '建立自信心，提升表達與溝通能力',
-        weights: { growthIntention: 4, socialOrientation: 2 },
-        profileBonus: { connector: 3 }
+        value: 'ambivert',
+        label: '中性 - 視情況而定',
+        weights: { socialOrientation: 3 },
+        profileBonus: { explorer: 1, builder: 1, connector: 1 }
       },
       {
-        value: 'global',
-        label: '拓展國際視野，認識不同文化的朋友',
-        weights: { growthIntention: 3, languageActivation: 2 },
+        value: 'extrovert',
+        label: '外向 - 喜歡大團體活動',
+        weights: { socialOrientation: 5 },
+        profileBonus: { explorer: 2, connector: 3 }
+      }
+    ]
+  },
+  {
+    id: 'interests',
+    question: '孩子最感興趣的活動類型？（可複選）',
+    type: 'multiple',
+    options: [
+      {
+        value: 'STEAM',
+        label: '🔬 STEAM 科技創新',
+        weights: { learningModality: 3 },
+        profileBonus: { builder: 3 }
+      },
+      {
+        value: 'Outdoor',
+        label: '🏕️ 戶外探險',
+        weights: { learningModality: 3 },
+        profileBonus: { explorer: 3, connector: 1 }
+      },
+      {
+        value: 'Sports',
+        label: '⚽ 運動專項',
+        weights: { learningModality: 3 },
         profileBonus: { explorer: 2, connector: 2 }
+      },
+      {
+        value: 'Arts',
+        label: '🎨 藝術創意',
+        weights: { learningModality: 3 },
+        profileBonus: { explorer: 1, builder: 2, connector: 1 }
+      },
+      {
+        value: 'English',
+        label: '📚 語言學習',
+        weights: { learningModality: 2 },
+        profileBonus: { builder: 1, connector: 2 }
+      }
+    ]
+  },
+  {
+    id: 'goals',
+    question: '參加營隊的主要目標是？',
+    type: 'single',
+    options: [
+      {
+        value: 'english',
+        label: '提升英文能力',
+        weights: { growthIntention: 4 },
+        profileBonus: { builder: 2, connector: 2 }
+      },
+      {
+        value: 'international',
+        label: '拓展國際視野',
+        weights: { growthIntention: 4 },
+        profileBonus: { explorer: 3, connector: 1 }
+      },
+      {
+        value: 'social',
+        label: '增進社交能力',
+        weights: { growthIntention: 4 },
+        profileBonus: { explorer: 1, connector: 3 }
+      },
+      {
+        value: 'independence',
+        label: '培養獨立自主',
+        weights: { growthIntention: 4 },
+        profileBonus: { explorer: 3, builder: 1 }
       }
     ]
   },
   {
     id: 'previous_experience',
-    question: '孩子過去參加營隊或國際活動的經驗？',
+    question: '孩子過去是否參加過類似的營隊活動？',
     type: 'single',
     options: [
       {
-        value: 'international',
-        label: '曾參加過國際營隊或海外遊學',
-        weights: { exposureLevel: 5, adaptability: 2, languageActivation: 2 },
-        profileBonus: { explorer: 2 }
-      },
-      {
-        value: 'overnight',
-        label: '參加過國內過夜營隊',
-        weights: { exposureLevel: 3, adaptability: 1 },
-        profileBonus: { explorer: 1, builder: 1 }
-      },
-      {
-        value: 'day',
-        label: '只參加過日間營隊或課程',
-        weights: { exposureLevel: 1 },
+        value: 'no',
+        label: '從未參加過',
+        weights: { exposureLevel: 0 },
         profileBonus: { builder: 2 }
       },
       {
-        value: 'none',
-        label: '沒有參加過任何營隊活動',
-        weights: { exposureLevel: 0 },
-        profileBonus: { builder: 1 }
+        value: 'local',
+        label: '參加過國內營隊',
+        weights: { exposureLevel: 2 },
+        profileBonus: { explorer: 1, builder: 1, connector: 1 }
+      },
+      {
+        value: 'international',
+        label: '參加過國際營隊',
+        weights: { exposureLevel: 5 },
+        profileBonus: { explorer: 2, connector: 2 }
       }
     ]
   }
 ];
 
+// ================================
 // 計算分析結果
+// ================================
 export function calculateProfile(answers: Record<string, string | string[]>): ChildProfile {
-  // 初始化分數
+  // 初始化型態分數
+  const profileScores: ProfileScores = {
+    explorer: 0,
+    builder: 0,
+    connector: 0
+  };
+
+  // 初始化維度分數
   const dimensionScores: DimensionScores = {
     languageActivation: 0,
     adaptability: 0,
@@ -341,12 +343,6 @@ export function calculateProfile(answers: Record<string, string | string[]>): Ch
     learningModality: 0,
     growthIntention: 0,
     exposureLevel: 0
-  };
-
-  const profileScores: ProfileWeights = {
-    explorer: 0,
-    builder: 0,
-    connector: 0
   };
 
   // 遍歷每個問題
@@ -361,15 +357,25 @@ export function calculateProfile(answers: Record<string, string | string[]>): Ch
       if (!option) return;
 
       // 累加維度分數
-      Object.entries(option.weights).forEach(([dim, score]) => {
-        dimensionScores[dim as keyof DimensionScores] += score || 0;
-      });
-
-      // 累加型態分數
-      if (option.profileBonus) {
-        Object.entries(option.profileBonus).forEach(([profile, bonus]) => {
-          profileScores[profile as ProfileType] += bonus || 0;
+      if (option.weights) {
+        Object.entries(option.weights).forEach(([dim, score]) => {
+          if (score !== undefined) {
+            dimensionScores[dim as keyof DimensionScores] += score;
+          }
         });
+      }
+
+      // 累加型態分數（使用指定的加權表）
+      if (option.profileBonus) {
+        if (option.profileBonus.explorer) {
+          profileScores.explorer += option.profileBonus.explorer;
+        }
+        if (option.profileBonus.builder) {
+          profileScores.builder += option.profileBonus.builder;
+        }
+        if (option.profileBonus.connector) {
+          profileScores.connector += option.profileBonus.connector;
+        }
       }
     });
   });
@@ -379,7 +385,11 @@ export function calculateProfile(answers: Record<string, string | string[]>): Ch
     .sort((a, b) => b[1] - a[1]) as [ProfileType, number][];
 
   const primaryType = sortedProfiles[0][0];
-  const secondaryType = sortedProfiles[1][1] > sortedProfiles[0][1] * 0.6
+  const primaryScore = sortedProfiles[0][1];
+  const secondaryScore = sortedProfiles[1][1];
+  
+  // 只有當次要型態分數達到主要型態的 50% 以上時才顯示
+  const secondaryType = secondaryScore >= primaryScore * 0.5
     ? sortedProfiles[1][0]
     : undefined;
 
@@ -401,45 +411,48 @@ function generateTraits(
   answers: Record<string, string | string[]>
 ): ChildProfile['traits'] {
   // 英文啟動度描述
-  const languageActivation = scores.languageActivation >= 4
+  const langScore = scores.languageActivation;
+  const languageActivation = langScore >= 4
     ? '英文使用意願高，敢於表達'
-    : scores.languageActivation >= 2
-    ? '英文使用較為謹慎，需要鼓勵'
-    : '英文使用意願較低，需要較多支持';
+    : langScore >= 3
+    ? '英文使用中等，需要一些鼓勵'
+    : '英文使用較為謹慎，需要較多支持';
 
   // 適應力描述
-  const adaptability = scores.adaptability >= 4
+  const adaptScore = scores.adaptability;
+  const adaptability = adaptScore >= 4
     ? '適應力強，能快速融入新環境'
-    : scores.adaptability >= 2
+    : adaptScore >= 3
     ? '適應力中等，需要一些時間調整'
     : '適應較慢，需要較多時間與支持';
 
   // 社交風格描述
-  const socialOrientation = scores.socialOrientation >= 4
+  const socialScore = scores.socialOrientation;
+  const socialOrientation = socialScore >= 4
     ? '外向活潑，喜歡團體互動'
-    : scores.socialOrientation >= 2
+    : socialScore >= 2
     ? '社交適中，能與人互動但也享受獨處'
     : '偏向內向，喜歡小團體或獨處';
 
   // 學習偏好
-  const activityAnswer = answers['activity_preference'];
+  const activityAnswer = answers['interests'];
   const activities = Array.isArray(activityAnswer) ? activityAnswer : [];
   const activityLabels: Record<string, string> = {
-    outdoor: '戶外探險',
-    sports: '運動競技',
-    steam: 'STEAM 科技',
-    creative: '藝術創意',
-    language: '語言文化'
+    Outdoor: '戶外探險',
+    Sports: '運動競技',
+    STEAM: 'STEAM 科技',
+    Arts: '藝術創意',
+    English: '語言文化'
   };
   const learningPreferences = activities.map(a => activityLabels[a] || a);
 
   // 成長目標
-  const goalAnswer = answers['growth_goal'] as string;
+  const goalAnswer = answers['goals'] as string;
   const goalLabels: Record<string, string> = {
-    independence: '培養獨立自主',
-    skills: '學習專業技能',
-    confidence: '建立自信表達',
-    global: '拓展國際視野'
+    english: '提升英文能力',
+    international: '拓展國際視野',
+    social: '增進社交能力',
+    independence: '培養獨立自主'
   };
   const growthGoals = [goalLabels[goalAnswer] || '全面發展'];
 
@@ -460,23 +473,36 @@ export function generateSummary(profile: ChildProfile, answers: Record<string, s
   let summary = `根據問卷分析，您的孩子屬於「${typeInfo.nameZh}（${typeInfo.name}）」型態。`;
 
   // 根據回答添加具體說明
-  const envAnswer = answers['new_environment'] as string;
-  if (envAnswer === 'quick') {
-    summary += '從適應能力來看，孩子能快速融入新環境，這對參加國際營隊是很大的優勢。';
-  } else if (envAnswer === 'slow' || envAnswer === 'difficult') {
+  const adaptAnswer = answers['adaptability'] as string;
+  if (adaptAnswer === '5' || adaptAnswer === '4') {
+    summary += '孩子能快速融入新環境，這對參加國際營隊是很大的優勢。';
+  } else if (adaptAnswer === '1' || adaptAnswer === '2') {
     summary += '考慮到孩子需要較多時間適應新環境，建議選擇結構較完善、支持較多的營隊。';
   }
 
-  const socialAnswer = answers['social_preference'] as string;
-  if (socialAnswer === 'leader' || socialAnswer === 'active') {
+  const socialAnswer = answers['social_style'] as string;
+  if (socialAnswer === 'extrovert') {
     summary += '孩子在團體中表現積極，適合有豐富團隊活動的營隊。';
-  } else if (socialAnswer === 'observer' || socialAnswer === 'independent') {
+  } else if (socialAnswer === 'introvert') {
     summary += '孩子偏好較小的團體，建議選擇班級規模較小的營隊。';
+  }
+
+  const goalAnswer = answers['goals'] as string;
+  if (goalAnswer === 'independence') {
+    summary += '培養獨立自主是主要目標，推薦有生活自理訓練的營隊。';
+  } else if (goalAnswer === 'social') {
+    summary += '增進社交能力是主要目標，推薦有豐富團體互動的營隊。';
+  } else if (goalAnswer === 'international') {
+    summary += '拓展國際視野是主要目標，推薦多國學員混合的營隊。';
   }
 
   if (secondaryInfo) {
     summary += `同時，孩子也展現出「${secondaryInfo.nameZh}」的特質傾向，可以考慮結合這兩種特質選擇營隊。`;
   }
+
+  // 加入分數資訊讓結果更透明
+  const scores = profile.typeScores;
+  summary += ` （型態分數：Explorer ${scores.explorer}、Builder ${scores.builder}、Connector ${scores.connector}）`;
 
   return summary;
 }

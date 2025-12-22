@@ -8,73 +8,73 @@ import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { SurveyQuestion } from "@/lib/surveyModel";
 
-// English version of survey questions with same weights as Chinese version
+// English version - same IDs and values as Chinese for consistent scoring
 const surveyQuestionsEN: SurveyQuestion[] = [
   {
-    id: 'english_willingness',
-    question: 'How does your child react when meeting foreigners?',
+    id: 'english_confidence',
+    question: "How confident is your child in communicating in English?",
     type: 'single',
     options: [
-      { value: 'eager', label: 'Eagerly greets them in English, not afraid of mistakes', weights: { languageActivation: 5, socialOrientation: 4 }, profileBonus: { explorer: 3, connector: 2 } },
-      { value: 'cautious', label: 'Observes first, then tries to communicate in English', weights: { languageActivation: 3, socialOrientation: 2 }, profileBonus: { builder: 2 } },
-      { value: 'shy', label: 'Gets shy, needs adult help to speak', weights: { languageActivation: 1, socialOrientation: 1 }, profileBonus: { builder: 3 } },
-      { value: 'avoid', label: 'Prefers not to use English, uses gestures instead', weights: { languageActivation: 0, socialOrientation: 1 }, profileBonus: { builder: 2 } }
+      { value: '1', label: '1 - Not confident at all', weights: { languageActivation: 1 }, profileBonus: { builder: 2 } },
+      { value: '2', label: '2 - Somewhat unconfident', weights: { languageActivation: 2 }, profileBonus: { builder: 1, connector: 1 } },
+      { value: '3', label: '3 - Neutral', weights: { languageActivation: 3 }, profileBonus: { explorer: 1, builder: 1, connector: 1 } },
+      { value: '4', label: '4 - Fairly confident', weights: { languageActivation: 4 }, profileBonus: { explorer: 2, connector: 2 } },
+      { value: '5', label: '5 - Very confident', weights: { languageActivation: 5 }, profileBonus: { explorer: 3, connector: 3 } }
     ]
   },
   {
-    id: 'new_environment',
-    question: 'When your child goes to a completely new place (like a new school or camp), they usually:',
+    id: 'adaptability',
+    question: 'How well does your child adapt to new environments?',
     type: 'single',
     options: [
-      { value: 'quick', label: 'Quickly makes new friends and adapts', weights: { adaptability: 5, socialOrientation: 4 }, profileBonus: { explorer: 3, connector: 2 } },
-      { value: 'moderate', label: 'Needs a day or two to adjust, then they are fine', weights: { adaptability: 3, socialOrientation: 2 }, profileBonus: { builder: 1, explorer: 1 } },
-      { value: 'slow', label: 'Takes longer to adapt, may feel homesick initially', weights: { adaptability: 1, socialOrientation: 1 }, profileBonus: { builder: 3 } },
-      { value: 'difficult', label: 'Feels very anxious, needs constant adult support', weights: { adaptability: 0, socialOrientation: 0 }, profileBonus: { builder: 2 } }
+      { value: '1', label: '1 - Needs a long time to adjust', weights: { adaptability: 1 }, profileBonus: { builder: 3 } },
+      { value: '2', label: '2 - Adapts slowly', weights: { adaptability: 2 }, profileBonus: { builder: 2, connector: 1 } },
+      { value: '3', label: '3 - Average', weights: { adaptability: 3 }, profileBonus: { explorer: 1, builder: 1, connector: 1 } },
+      { value: '4', label: '4 - Adapts quickly', weights: { adaptability: 4 }, profileBonus: { explorer: 2, connector: 2 } },
+      { value: '5', label: '5 - Adapts very quickly', weights: { adaptability: 5 }, profileBonus: { explorer: 3, connector: 3 } }
     ]
   },
   {
-    id: 'social_preference',
-    question: 'In group activities, what role does your child usually take?',
+    id: 'social_style',
+    question: "What is your child's social style?",
     type: 'single',
     options: [
-      { value: 'leader', label: 'Naturally becomes the leader, organizes activities', weights: { socialOrientation: 5, adaptability: 3 }, profileBonus: { connector: 3, explorer: 2 } },
-      { value: 'active', label: "Actively participates, but doesn't need to lead", weights: { socialOrientation: 4, adaptability: 3 }, profileBonus: { connector: 2, explorer: 2 } },
-      { value: 'observer', label: 'Observes first, prefers small group interactions', weights: { socialOrientation: 2, adaptability: 2 }, profileBonus: { builder: 3 } },
-      { value: 'independent', label: 'Prefers independent activities, uncomfortable in large groups', weights: { socialOrientation: 1, adaptability: 1 }, profileBonus: { builder: 2 } }
+      { value: 'introvert', label: 'Introverted - Prefers alone time or small groups', weights: { socialOrientation: 1 }, profileBonus: { builder: 3 } },
+      { value: 'ambivert', label: 'Ambivert - Depends on the situation', weights: { socialOrientation: 3 }, profileBonus: { explorer: 1, builder: 1, connector: 1 } },
+      { value: 'extrovert', label: 'Extroverted - Enjoys large group activities', weights: { socialOrientation: 5 }, profileBonus: { explorer: 2, connector: 3 } }
     ]
   },
   {
-    id: 'activity_preference',
-    question: 'Which activity types attract your child the most? (Select multiple)',
+    id: 'interests',
+    question: 'What types of activities interest your child the most? (Select all that apply)',
     type: 'multiple',
     options: [
-      { value: 'outdoor', label: '🏕️ Outdoor Adventure (hiking, camping, survival)', weights: { learningModality: 3, adaptability: 2 }, profileBonus: { explorer: 3 } },
-      { value: 'sports', label: '⚽ Sports (football, basketball, swimming)', weights: { learningModality: 3, socialOrientation: 2 }, profileBonus: { explorer: 2, connector: 1 } },
-      { value: 'steam', label: '🔬 STEAM (coding, robotics, science)', weights: { learningModality: 3, growthIntention: 2 }, profileBonus: { builder: 3 } },
-      { value: 'creative', label: '🎨 Arts & Creativity (painting, music, drama)', weights: { learningModality: 3, growthIntention: 2 }, profileBonus: { builder: 2, connector: 1 } },
-      { value: 'language', label: '📚 Language & Culture (English, cultural exchange)', weights: { learningModality: 2, languageActivation: 2 }, profileBonus: { connector: 2, builder: 1 } }
+      { value: 'STEAM', label: '🔬 STEAM & Technology', weights: { learningModality: 3 }, profileBonus: { builder: 3 } },
+      { value: 'Outdoor', label: '🏕️ Outdoor Adventure', weights: { learningModality: 3 }, profileBonus: { explorer: 3, connector: 1 } },
+      { value: 'Sports', label: '⚽ Sports & Athletics', weights: { learningModality: 3 }, profileBonus: { explorer: 2, connector: 2 } },
+      { value: 'Arts', label: '🎨 Arts & Creativity', weights: { learningModality: 3 }, profileBonus: { explorer: 1, builder: 2, connector: 1 } },
+      { value: 'English', label: '📚 Language Learning', weights: { learningModality: 2 }, profileBonus: { builder: 1, connector: 2 } }
     ]
   },
   {
-    id: 'growth_goal',
-    question: 'What growth do you most hope your child gains from an international camp?',
+    id: 'goals',
+    question: 'What is the primary goal for attending the camp?',
     type: 'single',
     options: [
-      { value: 'independence', label: 'Develop independence and problem-solving skills', weights: { growthIntention: 4, adaptability: 2 }, profileBonus: { explorer: 3 } },
-      { value: 'skills', label: 'Learn new skills and improve in a specific area', weights: { growthIntention: 4, learningModality: 2 }, profileBonus: { builder: 3 } },
-      { value: 'confidence', label: 'Build confidence and communication skills', weights: { growthIntention: 4, socialOrientation: 2 }, profileBonus: { connector: 3 } },
-      { value: 'global', label: 'Expand global perspective and make international friends', weights: { growthIntention: 3, languageActivation: 2 }, profileBonus: { explorer: 2, connector: 2 } }
+      { value: 'english', label: 'Improve English skills', weights: { growthIntention: 4 }, profileBonus: { builder: 2, connector: 2 } },
+      { value: 'international', label: 'Broaden international perspective', weights: { growthIntention: 4 }, profileBonus: { explorer: 3, connector: 1 } },
+      { value: 'social', label: 'Enhance social skills', weights: { growthIntention: 4 }, profileBonus: { explorer: 1, connector: 3 } },
+      { value: 'independence', label: 'Develop independence', weights: { growthIntention: 4 }, profileBonus: { explorer: 3, builder: 1 } }
     ]
   },
   {
     id: 'previous_experience',
-    question: "What is your child's previous experience with camps or international activities?",
+    question: 'Has your child participated in similar camp activities before?',
     type: 'single',
     options: [
-      { value: 'international', label: 'Has attended international camps or study abroad programs', weights: { exposureLevel: 5, adaptability: 2, languageActivation: 2 }, profileBonus: { explorer: 2 } },
-      { value: 'overnight', label: 'Has attended overnight camps locally', weights: { exposureLevel: 3, adaptability: 1 }, profileBonus: { explorer: 1, builder: 1 } },
-      { value: 'day', label: 'Only attended day camps or courses', weights: { exposureLevel: 1 }, profileBonus: { builder: 2 } },
-      { value: 'none', label: 'No previous camp experience', weights: { exposureLevel: 0 }, profileBonus: { builder: 1 } }
+      { value: 'no', label: 'Never attended', weights: { exposureLevel: 0 }, profileBonus: { builder: 2 } },
+      { value: 'local', label: 'Attended local camps', weights: { exposureLevel: 2 }, profileBonus: { explorer: 1, builder: 1, connector: 1 } },
+      { value: 'international', label: 'Attended international camps', weights: { exposureLevel: 5 }, profileBonus: { explorer: 2, connector: 2 } }
     ]
   }
 ];
@@ -134,7 +134,6 @@ export default function PreSurveyEN() {
   return (
     <Layout showFooter={false}>
       <div className="min-h-screen bg-background flex flex-col">
-        {/* Progress Header */}
         <div className="border-b border-border bg-card">
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between mb-3">
@@ -149,7 +148,6 @@ export default function PreSurveyEN() {
           </div>
         </div>
 
-        {/* Question Content */}
         <div className="flex-1 container mx-auto px-4 py-12 flex flex-col justify-center max-w-2xl">
           <div className="animate-fade-in" key={currentStep}>
             <div className="mb-8">
@@ -201,7 +199,6 @@ export default function PreSurveyEN() {
           </div>
         </div>
 
-        {/* Navigation Footer */}
         <div className="border-t border-border bg-card">
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between max-w-2xl mx-auto">
