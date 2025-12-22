@@ -24,6 +24,7 @@ import CampDetailEN from "./pages/en/CampDetail";
 import AboutEN from "./pages/en/About";
 import ContactEN from "./pages/en/Contact";
 import PreSurveyEN from "./pages/en/PreSurvey";
+import SurveyResultsEN from "./pages/en/SurveyResults";
 
 const queryClient = new QueryClient();
 
@@ -55,7 +56,7 @@ const App = () => (
           <Route path="/en/about" element={<AboutEN />} />
           <Route path="/en/contact" element={<ContactEN />} />
           <Route path="/en/survey/pre" element={<PreSurveyEN />} />
-          <Route path="/en/survey/results" element={<SurveyResults />} />
+          <Route path="/en/survey/results" element={<SurveyResultsEN />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
