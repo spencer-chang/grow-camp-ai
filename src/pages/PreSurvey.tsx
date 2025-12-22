@@ -6,83 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
-
-interface Question {
-  id: string;
-  question: string;
-  type: "scale" | "single" | "multiple";
-  options: { value: string; label: string }[];
-}
-
-const questions: Question[] = [
-  {
-    id: "english_confidence",
-    question: "孩子對使用英文溝通的自信程度？",
-    type: "scale",
-    options: [
-      { value: "1", label: "1 - 非常不自信" },
-      { value: "2", label: "2 - 有些不自信" },
-      { value: "3", label: "3 - 普通" },
-      { value: "4", label: "4 - 相當自信" },
-      { value: "5", label: "5 - 非常自信" },
-    ],
-  },
-  {
-    id: "adaptability",
-    question: "孩子適應新環境的能力如何？",
-    type: "scale",
-    options: [
-      { value: "1", label: "1 - 需要較長時間適應" },
-      { value: "2", label: "2 - 適應較慢" },
-      { value: "3", label: "3 - 一般" },
-      { value: "4", label: "4 - 適應較快" },
-      { value: "5", label: "5 - 非常快適應" },
-    ],
-  },
-  {
-    id: "social_style",
-    question: "孩子的社交風格是？",
-    type: "single",
-    options: [
-      { value: "introvert", label: "內向 - 喜歡獨處或小團體" },
-      { value: "ambivert", label: "中性 - 視情況而定" },
-      { value: "extrovert", label: "外向 - 喜歡大團體活動" },
-    ],
-  },
-  {
-    id: "interests",
-    question: "孩子最感興趣的活動類型？（可複選）",
-    type: "multiple",
-    options: [
-      { value: "STEAM", label: "🔬 STEAM 科技創新" },
-      { value: "Outdoor", label: "🏕️ 戶外探險" },
-      { value: "Sports", label: "⚽ 運動專項" },
-      { value: "Arts", label: "🎨 藝術創意" },
-      { value: "English", label: "📚 語言學習" },
-    ],
-  },
-  {
-    id: "goals",
-    question: "參加營隊的主要目標是？",
-    type: "single",
-    options: [
-      { value: "english", label: "提升英文能力" },
-      { value: "international", label: "拓展國際視野" },
-      { value: "social", label: "增進社交能力" },
-      { value: "independence", label: "培養獨立自主" },
-    ],
-  },
-  {
-    id: "previous_experience",
-    question: "孩子過去是否參加過類似的營隊活動？",
-    type: "single",
-    options: [
-      { value: "no", label: "從未參加過" },
-      { value: "local", label: "參加過國內營隊" },
-      { value: "international", label: "參加過國際營隊" },
-    ],
-  },
-];
+import { surveyQuestions } from "@/lib/surveyModel";
 
 export default function PreSurvey() {
   const navigate = useNavigate();
@@ -90,8 +14,8 @@ export default function PreSurvey() {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
 
-  const currentQuestion = questions[currentStep];
-  const progress = ((currentStep + 1) / questions.length) * 100;
+  const currentQuestion = surveyQuestions[currentStep];
+  const progress = ((currentStep + 1) / surveyQuestions.length) * 100;
 
   const handleSelect = (value: string) => {
     if (currentQuestion.type === "multiple") {
@@ -122,15 +46,17 @@ export default function PreSurvey() {
   };
 
   const handleNext = () => {
-    if (currentStep < questions.length - 1) {
+    if (currentStep < surveyQuestions.length - 1) {
       setCurrentStep((prev) => prev + 1);
     } else {
-      // Submit and show results
+      // 儲存答案到 sessionStorage 以便結果頁使用
+      sessionStorage.setItem('surveyAnswers', JSON.stringify(answers));
+      
       toast({
         title: "問卷完成！",
         description: "AI 正在分析您的回答並生成推薦結果...",
       });
-      // In a real app, this would call the AI action and redirect to results
+      
       navigate("/survey/results");
     }
   };
@@ -152,7 +78,7 @@ export default function PreSurvey() {
                 AI 適性配對問卷
               </span>
               <span className="text-sm font-medium">
-                {currentStep + 1} / {questions.length}
+                {currentStep + 1} / {surveyQuestions.length}
               </span>
             </div>
             <Progress value={progress} className="h-2" />
@@ -187,7 +113,7 @@ export default function PreSurvey() {
                   <div className="flex items-center gap-3">
                     <div
                       className={cn(
-                        "w-5 h-5 rounded-full border-2 flex items-center justify-center",
+                        "w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0",
                         isSelected(option.value)
                           ? "border-primary bg-primary"
                           : "border-muted-foreground"
@@ -229,7 +155,7 @@ export default function PreSurvey() {
                 onClick={handleNext}
                 disabled={!canProceed()}
               >
-                {currentStep === questions.length - 1 ? (
+                {currentStep === surveyQuestions.length - 1 ? (
                   <>
                     查看 AI 推薦
                     <Sparkles className="w-4 h-4 ml-2" />
