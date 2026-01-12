@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { CampBridgeLogo } from "./CampBridgeLogo";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,16 +51,13 @@ export function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to={isEnglish ? "/en/home" : "/"} className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl hero-gradient flex items-center justify-center">
-              <Globe className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <div className="hidden sm:block">
-              <span className="font-display font-bold text-lg text-foreground">EduGrowth</span>
-              <span className="text-xs text-muted-foreground block -mt-1">
-                {isEnglish ? "AI Education Platform" : "AI 國際教育平台"}
-              </span>
-            </div>
+          <Link to={isEnglish ? "/en/home" : "/"} className="flex items-center">
+            <CampBridgeLogo 
+              variant="A" 
+              size="medium" 
+              showText={true}
+              showTagline={false}
+            />
           </Link>
 
           {/* Desktop Navigation */}
