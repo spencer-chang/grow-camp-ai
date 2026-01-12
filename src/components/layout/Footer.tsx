@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { Globe, Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-
+import { CampBridgeLogo } from "./CampBridgeLogo";
 export function Footer() {
   const { isEnglish, t, getLocalizedPath } = useLanguage();
 
@@ -11,16 +11,14 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="space-y-4">
-            <Link to={getLocalizedPath("/")} className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
-                <Globe className="w-5 h-5 text-primary-foreground" />
-              </div>
-              <div>
-                <span className="font-display font-bold text-lg">EduGrowth</span>
-                <span className="text-xs text-muted block -mt-1">
-                  {t("AI 國際教育平台", "AI Education Platform")}
-                </span>
-              </div>
+            <Link to={getLocalizedPath("/")}>
+              <CampBridgeLogo 
+                variant="A" 
+                size="medium" 
+                showText={true} 
+                showTagline={true}
+                taglineText={t("AI 國際夏令營配對平台", "AI Camp Matching Platform")}
+              />
             </Link>
             <p className="text-sm text-muted leading-relaxed">
               {t(
@@ -121,8 +119,8 @@ export function Footer() {
         <div className="border-t border-muted/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted">
             {t(
-              "© 2024 EduGrowth AI 國際教育成長平台. All rights reserved.",
-              "© 2024 EduGrowth AI Education Platform. All rights reserved."
+              "© 2024 Camp Bridge AI 國際夏令營配對平台. All rights reserved.",
+              "© 2024 Camp Bridge AI Camp Matching Platform. All rights reserved."
             )}
           </p>
           <div className="flex gap-6 text-sm">
