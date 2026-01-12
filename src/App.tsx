@@ -16,6 +16,7 @@ import Dashboard from "./pages/Dashboard";
 import GrowthReport from "./pages/GrowthReport";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import LogoPreview from "./pages/LogoPreview";
 
 // English pages
 import HomeEN from "./pages/en/Home";
@@ -48,6 +49,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/growth-report/:childId/:year" element={<GrowthReport />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/logo-preview" element={<LogoPreview />} />
           
           {/* English Routes */}
           <Route path="/en/home" element={<HomeEN />} />
