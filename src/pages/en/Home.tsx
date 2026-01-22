@@ -72,18 +72,17 @@ export default function HomeEN() {
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8 animate-fade-in">
               <Sparkles className="w-4 h-4" />
-              Asia's Leading AI-Powered International Education Platform
+              AI Learning Fit · Talent Insights · Growth Observations
             </div>
 
             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-6 animate-slide-up">
-              Unlock Your Child's Potential Through
+              Find the International Camp Experience
               <br />
-              <span className="text-gradient">Transformative International Experiences</span>
+              <span className="text-gradient">That Truly Fits Your Child</span>
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-              We leverage advanced AI technology to match your child with the perfect European summer program—and measure their growth every step of the way. 
-              From personalized recommendations to comprehensive progress reports, we make international education meaningful and measurable.
+              More than just a camp directory. We use AI-powered learning fit analysis, talent insights, and growth observations to help families make confident, long-term decisions.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-slide-up" style={{ animationDelay: '0.2s' }}>

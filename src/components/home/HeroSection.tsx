@@ -15,20 +15,20 @@ export function HeroSection() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8 animate-fade-in">
             <Sparkles className="w-4 h-4" />
-            AI 驅動的國際教育配對系統
+            AI 適性分析 · 天賦側寫 · 成長洞察
           </div>
 
           {/* Main headline */}
           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-6 animate-slide-up">
-            讓孩子的國際體驗
+            為孩子找到真正適合的
             <br />
-            <span className="text-gradient">更準確、更有成長</span>
+            <span className="text-gradient">國際夏令營體驗</span>
           </h1>
 
           {/* Subheadline */}
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            透過 AI 適性配對，為您的孩子找到最適合的歐洲夏令營。
-            從營前評估到營後成長報告，完整追蹤孩子的國際學習旅程。
+            不只是海外營隊。我們透過 AI 適性分析、天賦側寫與成長洞察，
+            幫助家長做出更安心、也更有長期價值的選擇。
           </p>
 
           {/* CTA Buttons */}
