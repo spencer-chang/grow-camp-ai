@@ -1,7 +1,7 @@
 import { Layout } from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Globe2, Users, TrendingUp, Brain, Search, BarChart3, FileText, CheckCircle, Award, Shield, Heart } from "lucide-react";
+import { ArrowRight, Sparkles, Globe2, Users, TrendingUp, Brain, Search, Camera, Gift, CheckCircle, Award, Shield, Heart } from "lucide-react";
 import { CampCard } from "@/components/camps/CampCard";
 import { camps } from "@/data/camps";
 
@@ -19,15 +19,15 @@ const features = [
     color: "bg-accent/10 text-accent",
   },
   {
-    icon: BarChart3,
-    title: "Measurable Growth Tracking",
-    description: "Our pre and post-camp assessment framework captures developmental progress across key competencies—confidence, social skills, independence, and cross-cultural awareness.",
+    icon: Camera,
+    title: "Journey Highlights & Adaptation Insights",
+    description: "Beyond safety and fun, we capture your child's unique moments of adaptation and joy in a new environment. No rigid KPIs, just meaningful highlights of their international journey.",
     color: "bg-green-500/10 text-green-600",
   },
   {
-    icon: FileText,
-    title: "AI-Generated Growth Reports",
-    description: "Receive comprehensive growth reports that document your child's journey, highlight areas of improvement, and provide actionable recommendations for continued development.",
+    icon: Gift,
+    title: "Potential Spotlight & Discovery Memo",
+    description: "A personalized AI-powered memo that translates camp experiences into insights about your child's hidden potentials and unique personality traits. A gift of discovery for every parent.",
     color: "bg-amber-500/10 text-amber-600",
   },
 ];
