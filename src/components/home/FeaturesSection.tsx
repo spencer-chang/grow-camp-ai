@@ -1,4 +1,4 @@
-import { Brain, Search, BarChart3, FileText } from "lucide-react";
+import { Brain, Search, Camera, Gift } from "lucide-react";
 
 const features = [
   {
@@ -14,15 +14,15 @@ const features = [
     color: "bg-accent/10 text-accent",
   },
   {
-    icon: BarChart3,
-    title: "成長追蹤評估",
-    description: "營前營後問卷系統，記錄孩子各項能力的變化，讓成長軌跡清晰可見。",
+    icon: Camera,
+    title: "旅程適應與亮點記錄",
+    description: "除了安全與快樂，我們更為您捕捉孩子在陌生環境中的適應點與閃光時刻。捨棄繁瑣的教育指標，只紀錄這段國際旅程中最有意義的成長片段。",
     color: "bg-green-500/10 text-green-600",
   },
   {
-    icon: FileText,
-    title: "AI 成長報告",
-    description: "根據評估數據，AI 自動生成個人化成長報告，分析進步亮點並提供未來建議。",
+    icon: Gift,
+    title: "孩子的天賦側寫與發現",
+    description: "透過 AI 深度轉譯營隊中的行為表現，為您呈現孩子未曾被發現的天賦潛力與性格特質。這不只是報告，更是一份幫助您更懂孩子的專屬禮物。",
     color: "bg-amber-500/10 text-amber-600",
   },
 ];
