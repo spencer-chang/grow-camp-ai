@@ -19,7 +19,7 @@ export function HeroSection() {
           </div>
 
           {/* Main headline */}
-          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-6 animate-slide-up">
+          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-snug mb-6 animate-slide-up">
             跨越國界，在世界的角落
             <br />
             <span className="text-gradient">遇見更出色的孩子</span>
