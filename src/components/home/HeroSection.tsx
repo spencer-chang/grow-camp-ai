@@ -20,15 +20,14 @@ export function HeroSection() {
 
           {/* Main headline */}
           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-6 animate-slide-up">
-            為孩子找到真正適合的
+            跨越國界，在世界的角落
             <br />
-            <span className="text-gradient">國際夏令營體驗</span>
+            <span className="text-gradient">遇見更出色的孩子</span>
           </h1>
 
           {/* Subheadline */}
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            不只是海外營隊。我們透過 AI 適性分析、天賦側寫與成長洞察，
-            幫助家長做出更安心、也更有長期價值的選擇。
+            不只是海外營隊。透過 AI 精準配對與深度側寫，為孩子開啟一段安心、快樂且發現自我的國際旅程。
           </p>
 
           {/* CTA Buttons */}
