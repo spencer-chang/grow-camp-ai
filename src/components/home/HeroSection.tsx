@@ -19,10 +19,9 @@ export function HeroSection() {
           </div>
 
           {/* Main headline */}
-          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-relaxed mb-6 animate-slide-up">
-            跨越國界，在世界的角落
-            <br />
-            <span className="text-gradient">遇見更出色的孩子</span>
+          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 animate-slide-up">
+            <span className="block">跨越國界，在世界的角落</span>
+            <span className="block mt-2 md:mt-3 text-gradient">遇見更出色的孩子</span>
           </h1>
 
           {/* Subheadline */}
