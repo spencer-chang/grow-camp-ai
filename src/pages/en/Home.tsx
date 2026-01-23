@@ -82,7 +82,7 @@ export default function HomeEN() {
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-              More than just a camp directory. We use AI-powered learning fit analysis, talent insights, and growth observations to help families make confident, long-term decisions.
+              Combining AI-powered precision matching with in-depth personality profiling, we unlock a secure, joyful, and transformative global journey for your child.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-slide-up" style={{ animationDelay: '0.2s' }}>
