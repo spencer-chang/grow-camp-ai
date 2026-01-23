@@ -75,10 +75,9 @@ export default function HomeEN() {
               AI Learning Fit · Talent Insights · Growth Observations
             </div>
 
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-6 animate-slide-up">
-              Beyond Borders:
-              <br />
-              <span className="text-gradient">Discover Your Child's Global Potential</span>
+            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 animate-slide-up">
+              <span className="block">Beyond Borders:</span>
+              <span className="block mt-2 md:mt-3 text-gradient">Discover Your Child's Global Potential</span>
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-slide-up" style={{ animationDelay: '0.1s' }}>
