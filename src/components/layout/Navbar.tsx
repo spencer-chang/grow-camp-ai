@@ -126,8 +126,8 @@ export function Navbar() {
                 <Link to="/auth">
                   <Button variant="ghost" size="sm">{isEnglish ? "Login" : "登入"}</Button>
                 </Link>
-                <Link to="/auth?mode=register">
-                  <Button variant="default" size="sm">{isEnglish ? "Sign Up" : "免費註冊"}</Button>
+                <Link to="/survey/pre">
+                  <Button variant="default" size="sm">{isEnglish ? "Free Assessment" : "開始免費適性分析"}</Button>
                 </Link>
               </>
             )}
@@ -195,9 +195,9 @@ export function Navbar() {
                       {isEnglish ? "Login" : "登入"}
                     </Button>
                   </Link>
-                  <Link to="/auth?mode=register" onClick={() => setIsOpen(false)}>
+                  <Link to="/survey/pre" onClick={() => setIsOpen(false)}>
                     <Button variant="default" className="w-full">
-                      {isEnglish ? "Sign Up" : "免費註冊"}
+                      {isEnglish ? "Free Assessment" : "開始免費適性分析"}
                     </Button>
                   </Link>
                 </>
